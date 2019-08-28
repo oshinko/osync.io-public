@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MetaMask Signing</title>
+  </head>
+  <body>
+    <textarea id="address" placeholder="Address" readonly></textarea>
+    <textarea id="message" placeholder="Message"></textarea>
+    <textarea id="sign" placeholder="Sign" readonly></textarea>
+    <style>
+      textarea {
+        display: block;
+        margin: .8em;
+        width: 40em;
+        height: 10em;
+        max-width: 100%;
+      }
+    </style>
+    <script>
+      var web3 = new Web3(web3.currentProvider);
+      var address = document.getElementById('address');
+      var current = null;
+      var refresh = setInterval(function() {
+        if (web3.eth.defaultAccount !== current) {
+          address.value = current = web3.eth.defaultAccount;
+        }
+      }, 100);
+      var sign = document.getElementById('sign');
+      document.getElementById('message').addEventListener('blur', function() {
+        if (this.value) {
+          var hex = web3.toHex(this.value);
+          var from = web3.eth.defaultAccount;
+          web3.personal.sign(hex, from, (e, r) => sign.value = r);
+        }
+      }, false);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@"> 
+    <meta name="twitter:site" content="@">
+    <meta property="og:url" content="http://osync.io/posts/metamask-signing/">
+    
+        <meta property="og:title" content="MetaMask Signing - Osync I/O"> 
+    
+    <meta property="og:description" content="MetaMask を介したメッセージ署名を行いました。 MetaMask を準備 MetaMask は Chrome 拡張機能です。下記からダウンロードください。 HTML を作成 MetaMask が用意した Ethereum web3 API を実行する HTML フ">
+    <meta property="og:image" content="http://osync.io/images/headers/metamask.png">
+    
+        <title>MetaMask Signing - Osync I/O</title>
+    
+    <link rel="stylesheet" href="/fonts/FiraCode/fira_code.css">
+    <style>
+        @font-face {
+            font-family: flop;
+            src: url(/fonts/flop/FLOPDesignFont.woff2) format("woff2"),
+                 url(/fonts/flop/FLOPDesignFont.woff) format("woff");
+            font-weight: 400;
+        }
+        img {
+            max-width: 100%;
+        }
+        body {
+            margin: 0;
+            font-family: flop, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #e7f4ff;
+        }
+        a {
+            color: #499bea;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #304999;
+        }
+        pre code {
+            background-color: #eee;
+            border: 1px solid #999;
+            display: block;
+            padding: 1em;
+            line-height: 1.4em;
+            font-family: 'Fira Code', monospace;
+            overflow: auto;
+        }
+        header {
+            padding: 1em;
+            background: linear-gradient(to top, #499bea 0%, #304999 100%);
+            color: #b6cee2;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0 0 .4em 0;
+            color: #fff;
+        }
+        header h1 a {
+            color: inherit;
+            text-decoration: none;
+        }
+        header h1 a:hover {
+            color: #b6cee2;
+        }
+        header p {
+            margin: 0;
+            font-size: .8em;
+        }
+        nav {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            nav {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        nav li {
+            display: inline;
+            line-height: 1.6;
+            padding-bottom: .4em;
+            border-bottom: 2px solid #fff;
+        }
+        nav li.selected {
+            border-bottom: 2px solid #cc0051;
+        }
+        main {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            main {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        article {
+            margin: 1.5em 0;
+            padding: 1em;
+            background-color: #fff;
+        }
+        article h1 {
+            margin: 0 0 .6em 0;
+            font-size: 1.5em;
+        }
+        article h2 {
+            position: relative;
+            padding: .6em 1em;
+            background-color: #61a5e4;
+            border-radius: 7px;
+            color: white;
+            font-size: 1.25em;
+        }
+        article h2:after {
+            position: absolute;
+            content: '';
+            top: 100%;
+            left: 30px;
+            border: 8px solid transparent;
+            border-top: 8px solid #61a5e4;
+            width: 0;
+            height: 0;
+        }
+        article h3 {
+            padding: .25em 0 .25em .6em;
+            border-left: .4em solid #499bea;
+            font-size: 1.125em;
+        }
+        article > ul {
+            margin: 1em 0;
+            padding: 0;
+            list-style: none;
+            font-size: .8em;
+        }
+        article > ul li {
+            display: inline;
+            line-height: 1.6;
+        }
+        article .date {
+            font-size: .8em;
+        }
+        section li {
+            line-height: 1.6;
+        }
+        footer {
+            margin: 1em;
+        }
+        footer ul {
+            margin: 0;
+            padding: 0 0 0;
+            list-style: none;
+            text-align: center;
+        }
+        footer li {
+            display: inline;
+            line-height: 1.6;
+        }
+        footer small {
+            display: block;
+            margin: 1em;
+            text-align: center;
+            color: #666;
+        }
+        .responsive {
+            position: relative;
+            padding-bottom: 75%;
+        }
+        .responsive > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+        }
+        ul.pagination {
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, Sans-Serif;
+        }
+        ul.pagination li {
+            display: inline;
+            padding: .2em;
+        }
+    </style>
+</head>
+
+    <body>
+        <header>
+    <h1><a href="/">Osync I/O</a></h1>
+    <p>ゲーム好きプログラマーおしんこのブログ</p>
+</header>
+
+        
+
+<nav>
+    <ul>
+        
+            <li>
+                <a href="/posts">Posts</a></li>
+        
+            <li>
+                <a href="/tags">Tags</a></li>
+        
+            <li>
+                <a href="/about">About</a></li>
+        
+    </ul>
+</nav>
+
+
+        <main>
+            <article>
+                <h1><a href="/posts/metamask-signing/">MetaMask Signing</a></h1>
+                
+                    
+                        <p class="date">
+                            <time datetime="2018-06-20 16:02:03 &#43;0900">
+                                Last committed on 18/06/20 16:02 &#43;0900
+                            </time>
+                        </p>
+                    
+                    <p class="date">
+                        <time datetime="2018-06-19T18:00:00Z&#43;0900">
+                            Posted on 18/06/19 18:00 &#43;0900
+                        </time>
+                    </p>
+                
+                
+                    <ul>
+                        
+                            <li><a href="/tags/metamask">metamask</a></li>
+                        
+                            <li><a href="/tags/ethereum">ethereum</a></li>
+                        
+                    </ul>
+                
+                <img src="/images/headers/metamask.png">
+                
+                <section>
+
+<p>MetaMask を介したメッセージ署名を行いました。</p>
+
+<h2 id="metamask-を準備">MetaMask を準備</h2>
+
+<p>MetaMask は Chrome 拡張機能です。下記からダウンロードください。</p>
+
+<p><a href="https://metamask.io/"><img src="/images/metamask-dl.png" alt="MetaMask" /></a></p>
+
+<h2 id="html-を作成">HTML を作成</h2>
+
+<p>MetaMask が用意した Ethereum web3 API を実行する HTML ファイルを作成します。</p>
+
+<pre><code class="language-bash">cat &lt;&lt;EOF&gt; metamask-signing.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;MetaMask Signing&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;textarea id=&quot;address&quot; placeholder=&quot;Address&quot; readonly&gt;&lt;/textarea&gt;
+    &lt;textarea id=&quot;message&quot; placeholder=&quot;Message&quot;&gt;&lt;/textarea&gt;
+    &lt;textarea id=&quot;sign&quot; placeholder=&quot;Sign&quot; readonly&gt;&lt;/textarea&gt;
+    &lt;style&gt;
+      textarea {
+        display: block;
+        margin: .8em;
+        width: 40em;
+        height: 10em;
+        max-width: 100%;
+      }
+    &lt;/style&gt;
+    &lt;script&gt;
+      var web3 = new Web3(web3.currentProvider);
+      var address = document.getElementById('address');
+      var current = null;
+      var refresh = setInterval(function() {
+        if (web3.eth.defaultAccount !== current) {
+          address.value = current = web3.eth.defaultAccount;
+        }
+      }, 100);
+      var sign = document.getElementById('sign');
+      document.getElementById('message').addEventListener('blur', function() {
+        if (this.value) {
+          var hex = web3.toHex(this.value);
+          var from = web3.eth.defaultAccount;
+          web3.personal.sign(hex, from, (e, r) =&gt; sign.value = r);
+        }
+      }, false);
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+EOF
+</code></pre>
+
+<h2 id="サーバーを起動">サーバーを起動</h2>
+
+<p>Web サーバーはなんでもいいのですが、 Python 3 の http.server モジュールを利用するのが楽です。</p>
+
+<pre><code class="language-bash">python3 -m http.server
+</code></pre>
+
+<h2 id="ブラウザで確認">ブラウザで確認</h2>
+
+<p><a href="/docs/metamask-signing.html">ブラウザで確認</a>すると MetaMask を介して署名をすることが出来ると思います。</p>
+
+<p>MetaMask のアンロックを忘れずに！</p>
+</section>
+            </article>
+        </main>
+        <footer>
+    
+    <ul>
+        
+            <li><a href="https://discord.gg/JhgFz8u">Discord</a></li>
+        
+            <li><a href="https://github.com/oshinko">GitHub</a></li>
+        
+            <li><a href="https://twitter.com/Osynco">Twitter</a></li>
+        
+            <li><a href="https://steamcommunity.com/id/Osh1nko">Steam</a></li>
+        
+    </ul>
+    
+    <small>
+        (C) 2018 Osync I/O.
+        Powered by <a href="https://gohugo.io">Hugo</a>.
+    </small>
+</footer>
+
+    </body>
+</html>

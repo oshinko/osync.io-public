@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@"> 
+    <meta name="twitter:site" content="@">
+    <meta property="og:url" content="http://osync.io/posts/ethereum-private-network/">
+    
+        <meta property="og:title" content="Ethereum Private Network - Osync I/O"> 
+    
+    <meta property="og:description" content="スマートコントラクト (DApps) の開発を行うために、イーサリアムの公式 CLI である Geth を使用して、プライベートネットワークを構築していきます。 開発環境のディ">
+    <meta property="og:image" content="http://osync.io/images/headers/ethereum.png">
+    
+        <title>Ethereum Private Network - Osync I/O</title>
+    
+    <link rel="stylesheet" href="/fonts/FiraCode/fira_code.css">
+    <style>
+        @font-face {
+            font-family: flop;
+            src: url(/fonts/flop/FLOPDesignFont.woff2) format("woff2"),
+                 url(/fonts/flop/FLOPDesignFont.woff) format("woff");
+            font-weight: 400;
+        }
+        img {
+            max-width: 100%;
+        }
+        body {
+            margin: 0;
+            font-family: flop, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #e7f4ff;
+        }
+        a {
+            color: #499bea;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #304999;
+        }
+        pre code {
+            background-color: #eee;
+            border: 1px solid #999;
+            display: block;
+            padding: 1em;
+            line-height: 1.4em;
+            font-family: 'Fira Code', monospace;
+            overflow: auto;
+        }
+        header {
+            padding: 1em;
+            background: linear-gradient(to top, #499bea 0%, #304999 100%);
+            color: #b6cee2;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0 0 .4em 0;
+            color: #fff;
+        }
+        header h1 a {
+            color: inherit;
+            text-decoration: none;
+        }
+        header h1 a:hover {
+            color: #b6cee2;
+        }
+        header p {
+            margin: 0;
+            font-size: .8em;
+        }
+        nav {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            nav {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        nav li {
+            display: inline;
+            line-height: 1.6;
+            padding-bottom: .4em;
+            border-bottom: 2px solid #fff;
+        }
+        nav li.selected {
+            border-bottom: 2px solid #cc0051;
+        }
+        main {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            main {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        article {
+            margin: 1.5em 0;
+            padding: 1em;
+            background-color: #fff;
+        }
+        article h1 {
+            margin: 0 0 .6em 0;
+            font-size: 1.5em;
+        }
+        article h2 {
+            position: relative;
+            padding: .6em 1em;
+            background-color: #61a5e4;
+            border-radius: 7px;
+            color: white;
+            font-size: 1.25em;
+        }
+        article h2:after {
+            position: absolute;
+            content: '';
+            top: 100%;
+            left: 30px;
+            border: 8px solid transparent;
+            border-top: 8px solid #61a5e4;
+            width: 0;
+            height: 0;
+        }
+        article h3 {
+            padding: .25em 0 .25em .6em;
+            border-left: .4em solid #499bea;
+            font-size: 1.125em;
+        }
+        article > ul {
+            margin: 1em 0;
+            padding: 0;
+            list-style: none;
+            font-size: .8em;
+        }
+        article > ul li {
+            display: inline;
+            line-height: 1.6;
+        }
+        article .date {
+            font-size: .8em;
+        }
+        section li {
+            line-height: 1.6;
+        }
+        footer {
+            margin: 1em;
+        }
+        footer ul {
+            margin: 0;
+            padding: 0 0 0;
+            list-style: none;
+            text-align: center;
+        }
+        footer li {
+            display: inline;
+            line-height: 1.6;
+        }
+        footer small {
+            display: block;
+            margin: 1em;
+            text-align: center;
+            color: #666;
+        }
+        .responsive {
+            position: relative;
+            padding-bottom: 75%;
+        }
+        .responsive > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+        }
+        ul.pagination {
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, Sans-Serif;
+        }
+        ul.pagination li {
+            display: inline;
+            padding: .2em;
+        }
+    </style>
+</head>
+
+    <body>
+        <header>
+    <h1><a href="/">Osync I/O</a></h1>
+    <p>ゲーム好きプログラマーおしんこのブログ</p>
+</header>
+
+        
+
+<nav>
+    <ul>
+        
+            <li>
+                <a href="/posts">Posts</a></li>
+        
+            <li>
+                <a href="/tags">Tags</a></li>
+        
+            <li>
+                <a href="/about">About</a></li>
+        
+    </ul>
+</nav>
+
+
+        <main>
+            <article>
+                <h1><a href="/posts/ethereum-private-network/">Ethereum Private Network</a></h1>
+                
+                    
+                        <p class="date">
+                            <time datetime="2018-06-22 17:32:50 &#43;0900">
+                                Last committed on 18/06/22 17:32 &#43;0900
+                            </time>
+                        </p>
+                    
+                    <p class="date">
+                        <time datetime="2018-06-20T22:15:00Z&#43;0900">
+                            Posted on 18/06/20 22:15 &#43;0900
+                        </time>
+                    </p>
+                
+                
+                    <ul>
+                        
+                            <li><a href="/tags/ethereum">ethereum</a></li>
+                        
+                            <li><a href="/tags/blockchain">blockchain</a></li>
+                        
+                    </ul>
+                
+                <img src="/images/headers/ethereum.png">
+                
+                <section>
+
+<p>スマートコントラクト (DApps) の開発を行うために、イーサリアムの公式 CLI である <a href="https://github.com/ethereum/go-ethereum">Geth</a> を使用して、プライベートネットワークを構築していきます。</p>
+
+<h2 id="開発環境のディレクトリ構成">開発環境のディレクトリ構成</h2>
+
+<p>このような環境を構築します。</p>
+
+<pre><code class="language-bash">tree -a
+.
+├── .ethereum-dev
+│   ├── clients
+│   │   └── 1
+│   └── miner
+└── genesis.json
+</code></pre>
+
+<p>マイナーとその他のクライアントで分ける理由ですが、 geth コンソール上で開発とマイニングを同時に行うと Ether の送金やコントラクト実行のために消費される Gas コストなどが、同時に得られるマイニング報酬とごっちゃになり、確認しずらくなってしまうのを避けるためです。</p>
+
+<h2 id="ネットワーク-id-を定義">ネットワーク ID を定義</h2>
+
+<p>プライベートネットワークの ID を決めます。既知の値は避けてください。</p>
+
+<pre><code class="language-bash">NETID=15
+</code></pre>
+
+<h2 id="genesis-ブロックを定義">Genesis ブロックを定義</h2>
+
+<p>始祖となるブロックを定義します。</p>
+
+<pre><code class="language-bash">cat &lt;&lt;EOF&gt; genesis.json
+{
+  &quot;config&quot;: {
+    &quot;chainId&quot;: $NETID
+  },
+  &quot;nonce&quot;: &quot;0x0000000000000042&quot;,
+  &quot;timestamp&quot;: &quot;0x0&quot;,
+  &quot;parentHash&quot;: &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,
+  &quot;extraData&quot;: &quot;&quot;,
+  &quot;gasLimit&quot;: &quot;0x8000000&quot;,
+  &quot;difficulty&quot;: &quot;0x4000&quot;,
+  &quot;mixhash&quot;: &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,
+  &quot;coinbase&quot;: &quot;0x3333333333333333333333333333333333333333&quot;,
+  &quot;alloc&quot;: {}
+}
+EOF
+</code></pre>
+
+<h2 id="geth-を用意">Geth を用意</h2>
+
+<p>macOS の場合は、公式ウォレットの <a href="https://github.com/ethereum/mist">Mist</a> に含まれる Geth を使います。</p>
+
+<pre><code class="language-bash">geth() { $HOME/Library/Application\ Support/Ethereum\ Wallet/binaries/Geth/unpacked/geth $*; }
+</code></pre>
+
+<h2 id="マイナーを初期化">マイナーを初期化</h2>
+
+<p>データディレクトリを決めます。</p>
+
+<pre><code class="language-bash">DATA=$HOME/.ethereum-dev/miner
+</code></pre>
+
+<p>genesis.json より初期化します。</p>
+
+<pre><code class="language-bash">geth --datadir $DATA init genesis.json
+</code></pre>
+
+<h2 id="クライアントを初期化">クライアントを初期化</h2>
+
+<p>データディレクトリを決めます。</p>
+
+<pre><code class="language-bash">DATA=$HOME/.ethereum-dev/clients/1
+</code></pre>
+
+<p>genesis.json より初期化します。</p>
+
+<pre><code class="language-bash">geth --datadir $DATA init genesis.json
+</code></pre>
+
+<p>一度起動してマイニング報酬の宛先となるアカウントを作成しておきます。</p>
+
+<pre><code class="language-bash">geth --datadir $DATA --networkid $NETID --port 30305 console 2&gt;&gt; $DATA/err.log
+&gt; 
+&gt; personal.newAccount('')  // Create an empty password account
+&gt; &quot;0x71efd180a2246663624a3e6f13da97b9315815f3&quot;
+&gt; exit
+</code></pre>
+
+<h2 id="マイニングを開始">マイニングを開始</h2>
+
+<p>マイニング報酬の宛先をクライアントが持つアドレス指定して実行後、ログに出力されたノード情報をコピーします。</p>
+
+<pre><code class="language-bash">ETHERBASE=0x71efd180a2246663624a3e6f13da97b9315815f3
+
+geth --datadir $DATA --networkid $NETID --identity miner \
+     --port 30304 --lightserv 75 --lightpeers 10 --shh \
+     --mine --minerthreads 1 --etherbase $ETHERBASE \
+     --ipcpath geth.ipc
+...
+INFO [06-21|20:56:52] UDP listener up self=enode://84a278e86445104cb2552369acf31a5e6b74751fd9e57bffcaa8e89e65d63ec30ee560ba6e1ef1c312af0f7859c875b0ce043d066d33542e29a48813b2f9ba54@[::]:30304
+...
+</code></pre>
+
+<h2 id="クライアントを起動">クライアントを起動</h2>
+
+<p>マイナーのノード情報を <code>bootnodes</code> に指定して起動します。</p>
+
+<pre><code class="language-bash">MINERADDR=127.0.0.1
+
+BOOTNODES=enode://84a278e86445104cb2552369acf31a5e6b74751fd9e57bffcaa8e89e65d63ec30ee560ba6e1ef1c312af0f7859c875b0ce043d066d33542e29a48813b2f9ba54@$MINERADDR:30304
+
+geth --datadir $DATA --networkid $NETID --identity client \
+     --port 30305 --bootnodes $BOOTNODES --shh \
+     --rpc --rpcaddr 0.0.0.0 --rpcport 8104 \
+     --ws --wsaddr 0.0.0.0 --wsport 8105 \
+     --ipcpath geth.ipc \
+     console 2&gt;&gt; $DATA/err.log
+&gt; 
+&gt; eth.blockNumber  // Check number
+&gt; web3.fromWei(eth.getBalance(eth.coinbase), 'ether');
+</code></pre>
+
+<p>もしクライアントでマイニングをする場合、コンソール上で下記のようにします。</p>
+
+<pre><code class="language-javascript">miner.start();
+
+// 採掘できるまでちょっと待つ
+
+miner.stop();
+</code></pre>
+
+<h2 id="おわりに">おわりに</h2>
+
+<p>今回作成したネットワークは、 MetaMask を介して接続することも可能です。</p>
+
+<p>この記事について、何か気になるところがあれば、チャットや SNS などでお気軽にご連絡ください。</p>
+</section>
+            </article>
+        </main>
+        <footer>
+    
+    <ul>
+        
+            <li><a href="https://discord.gg/JhgFz8u">Discord</a></li>
+        
+            <li><a href="https://github.com/oshinko">GitHub</a></li>
+        
+            <li><a href="https://twitter.com/Osynco">Twitter</a></li>
+        
+            <li><a href="https://steamcommunity.com/id/Osh1nko">Steam</a></li>
+        
+    </ul>
+    
+    <small>
+        (C) 2018 Osync I/O.
+        Powered by <a href="https://gohugo.io">Hugo</a>.
+    </small>
+</footer>
+
+    </body>
+</html>
