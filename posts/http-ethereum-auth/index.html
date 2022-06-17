@@ -272,86 +272,86 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>python -m pip install -U -e git+https://github.com/oshinko/pyhttpauth.git#egg<span style="color:#f92672">=</span>httpauth
 </span></span></code></pre></div><p><a href="http://flask.pocoo.org">Flask</a> を使って作っていきます。
 他のお好みのフレームワークでもいいと思います。</p>
-<pre tabindex="0"><code>cat &lt;&lt;EOF&gt; run.py
-from flask import Flask, jsonify, request
-from osnk.httpauth import EthereumAuthentication
-from osnk.validations import requires
-
-app = Flask(__name__)
-eth_auth = EthereumAuthentication()
-
-
-@eth_auth.authorization
-def authorization(header):
-    return request.headers.get(header)
-
-
-@eth_auth.authenticate
-def authenticate(header, scheme):
-    return jsonify(error=&#39;Unauthorized&#39;), 401, {header: scheme}
-
-
-@eth_auth.message
-def message(address):
-    return b&#39;Hello!&#39;
-
-
-@app.route(&#39;/ethereum/addresses&#39;, methods=[&#39;POST&#39;])
-@requires(eth_auth)
-def post_ethereum_addresses():
-    return jsonify(f&#39;0x{eth_auth.address.hex()}&#39;)
-
-
-@app.route(&#39;/&#39;)
-def get_client():
-    return &#34;&#34;&#34;
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;title&gt;Client&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;script&gt;
-    var web3 = new Web3(web3.currentProvider);
-    var current = null;
-    setInterval(() =&gt; {
-      if (web3.eth.defaultAccount !== current) {
-        current = web3.eth.defaultAccount;
-        var hex = web3.toHex(&#34;Hello!&#34;);
-        var from = web3.eth.defaultAccount;
-        web3.personal.sign(hex, from, (e, r) =&gt; {
-          if (e) {
-            var result = document.createTextNode(e.message);
-            document.querySelector(&#34;body&#34;).appendChild(result);
-            return;
-          }
-          var req = new XMLHttpRequest();
-          req.open(&#34;POST&#34;, &#34;/ethereum/addresses&#34;);
-          req.setRequestHeader(&#34;Content-Type&#34;, &#34;application/json&#34;);
-          req.setRequestHeader(&#34;Authorization&#34;, \`Ethereum \${from} \${r}\`);
-          req.onreadystatechange = () =&gt; {
-            if (req.readyState === 4 &amp;&amp; req.status === 200) {
-              var address = JSON.parse(req.responseText);
-              var result = document.createTextNode(\`Accepted \${address}.\`);
-              document.querySelector(&#34;body&#34;).appendChild(result);
-            }
-          };
-          req.send();
-        });
-      }
-    }, 100);
-  &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-&#34;&#34;&#34;
-
-
-if __name__ == &#39;__main__&#39;:
-    app.run(host=&#39;0.0.0.0&#39;, port=8080, debug=True)
-EOF
-</code></pre><p>サーバーを起動します。</p>
-<pre tabindex="0"><code>python run.py
-</code></pre><p>スクリプト実行後、 <a href="http://localhost:8080">localhost:8080</a> にアクセスすると動作確認ができます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF&gt; run.py
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">from flask import Flask, jsonify, request
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">from osnk.httpauth import EthereumAuthentication
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">from osnk.validations import requires
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">app = Flask(__name__)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">eth_auth = EthereumAuthentication()
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">@eth_auth.authorization
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">def authorization(header):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    return request.headers.get(header)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">@eth_auth.authenticate
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">def authenticate(header, scheme):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    return jsonify(error=&#39;Unauthorized&#39;), 401, {header: scheme}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">@eth_auth.message
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">def message(address):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    return b&#39;Hello!&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">@app.route(&#39;/ethereum/addresses&#39;, methods=[&#39;POST&#39;])
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">@requires(eth_auth)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">def post_ethereum_addresses():
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    return jsonify(f&#39;0x{eth_auth.address.hex()}&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">@app.route(&#39;/&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">def get_client():
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    return &#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;!DOCTYPE html&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;html&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;head&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;title&gt;Client&lt;/title&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/head&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    var web3 = new Web3(web3.currentProvider);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    var current = null;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    setInterval(() =&gt; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      if (web3.eth.defaultAccount !== current) {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        current = web3.eth.defaultAccount;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        var hex = web3.toHex(&#34;Hello!&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        var from = web3.eth.defaultAccount;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        web3.personal.sign(hex, from, (e, r) =&gt; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          if (e) {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            var result = document.createTextNode(e.message);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            document.querySelector(&#34;body&#34;).appendChild(result);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            return;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          var req = new XMLHttpRequest();
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          req.open(&#34;POST&#34;, &#34;/ethereum/addresses&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          req.setRequestHeader(&#34;Content-Type&#34;, &#34;application/json&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          req.setRequestHeader(&#34;Authorization&#34;, \`Ethereum \${from} \${r}\`);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          req.onreadystatechange = () =&gt; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            if (req.readyState === 4 &amp;&amp; req.status === 200) {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              var address = JSON.parse(req.responseText);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              var result = document.createTextNode(\`Accepted \${address}.\`);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              document.querySelector(&#34;body&#34;).appendChild(result);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          };
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          req.send();
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        });
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }, 100);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/html&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">if __name__ == &#39;__main__&#39;:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    app.run(host=&#39;0.0.0.0&#39;, port=8080, debug=True)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p>サーバーを起動します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python run.py
+</span></span></code></pre></div><p>スクリプト実行後、 <a href="http://localhost:8080">localhost:8080</a> にアクセスすると動作確認ができます。</p>
 <p>以上、 Ethereum Address の所有権の証明をする上での参考になればと思います。</p>
 </section>
             </article>

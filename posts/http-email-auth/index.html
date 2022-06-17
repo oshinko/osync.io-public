@@ -321,15 +321,15 @@ if (!doNotTrack) {
 <p>Hint は、認証を開始してからの有効期限と、ユーザー任意のペイロード、認可情報の HMAC 署名を含むトークンです。</p>
 <p>メールアドレスに送信されるパスワードをサーバーの秘密鍵で暗号化したデータであり、これを参照して認証を行います。</p>
 <p>次の疑似コードは、 Hint の作成例です。</p>
-<pre tabindex="0"><code>Secret = &#34;Your secret words&#34;
-Address = &#34;me@domain&#34;
-Password = RANDOM()
-Expires = &#34;2018-01-01T00:00:00&#34;
-Payload = &#34;Hello!&#34;
-Answer = Address + &#34; &#34; + Password + &#34; &#34; + Expires + &#34; &#34; + Payload
-Signature = HMACSHA256(Secret, Answer)
-Hint = BASE64(Expires + Payload + Signature)
-</code></pre><h2 id="認証により保護されたリソースにアクセスする">認証により保護されたリソースにアクセスする</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Secret <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Your secret words&#34;</span>
+</span></span><span style="display:flex;"><span>Address <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;me@domain&#34;</span>
+</span></span><span style="display:flex;"><span>Password <span style="color:#f92672">=</span> RANDOM<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>Expires <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2018-01-01T00:00:00&#34;</span>
+</span></span><span style="display:flex;"><span>Payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello!&#34;</span>
+</span></span><span style="display:flex;"><span>Answer <span style="color:#f92672">=</span> Address + <span style="color:#e6db74">&#34; &#34;</span> + Password + <span style="color:#e6db74">&#34; &#34;</span> + Expires + <span style="color:#e6db74">&#34; &#34;</span> + Payload
+</span></span><span style="display:flex;"><span>Signature <span style="color:#f92672">=</span> HMACSHA256<span style="color:#f92672">(</span>Secret, Answer<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Hint <span style="color:#f92672">=</span> BASE64<span style="color:#f92672">(</span>Expires + Payload + Signature<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="認証により保護されたリソースにアクセスする">認証により保護されたリソースにアクセスする</h2>
 <p>最後に、保護されたリソースにアクセスする一例を示します。</p>
 <p>メール認証によって得られたアクセストークンをサーバーに提示することで、アクセス権を証明します。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl -v -H <span style="color:#e6db74">&#34;Authorization: Email-Token </span>$TOKEN<span style="color:#e6db74">&#34;</span> http://localhost:8080/locked/contents
