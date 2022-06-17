@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="description" content="野良プログラマーおしんこのブログ">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="@"> 
     <meta name="twitter:site" content="@">
@@ -208,7 +208,7 @@ if (!doNotTrack) {
     <body>
         <header>
     <h1><a href="/">Osync I/O</a></h1>
-    <p>ゲーム好きプログラマーおしんこのブログ</p>
+    <p>野良プログラマーおしんこのブログ</p>
 </header>
 
         
@@ -235,8 +235,8 @@ if (!doNotTrack) {
                 
                     
                         <p class="date">
-                            <time datetime="2019-08-28 22:30:22 &#43;0900">
-                                Last committed on 19/08/28 22:30 &#43;0900
+                            <time datetime="2022-06-18 00:24:12 &#43;0900">
+                                Last committed on 22/06/18 00:24 &#43;0900
                             </time>
                         </p>
                     
@@ -264,7 +264,7 @@ if (!doNotTrack) {
                 <section><p>最新版は、 <a href="https://github.com/oshinko/gitbot">https://github.com/oshinko/gitbot</a> をご覧ください！</p>
 <h2 id="installing-on-raspbian">Installing on Raspbian</h2>
 <h3 id="installing-python-36">Installing Python 3.6</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
 </span></span><span style="display:flex;"><span>wget https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz
 </span></span><span style="display:flex;"><span>tar xf Python-3.6.5.tar.xz
@@ -273,28 +273,28 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>make
 </span></span><span style="display:flex;"><span>sudo make altinstall
 </span></span></code></pre></div><h3 id="installing-git">Installing Git</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get install git
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt-get install git
 </span></span></code></pre></div><h3 id="configuring-user">Configuring User</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo useradd -m -s /bin/bash git
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo useradd -m -s /bin/bash git
 </span></span><span style="display:flex;"><span>sudo su - git
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh-keygen -f $HOME/.ssh/id_rsa -C git@rasppi0w.local -q -N <span style="color:#e6db74">&#34;&#34;</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3.6 -m venv .venv
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh-keygen -f $HOME/.ssh/id_rsa -C git@rasppi0w.local -q -N <span style="color:#e6db74">&#34;&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3.6 -m venv .venv
 </span></span><span style="display:flex;"><span>.venv/bin/python -m pip install -U -e git+https://github.com/oshinko/bot.git#egg<span style="color:#f92672">=</span>bot-0.0.0
 </span></span><span style="display:flex;"><span>.venv/bin/python -m pip install -U -e git+https://github.com/oshinko/gitbot.git#egg<span style="color:#f92672">=</span>gitbot-0.0.0
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF&gt; .gitbot
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt; EOF &gt; .gitbot
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">GIT_SSH_COMMAND=&#34;ssh -o StrictHostKeyChecking=no&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">GITBOT_TOKEN=YOUR_BOT_TOKEN
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">GITBOT_CHANNELS=&#34;#your-favorite-channel-1 #your-favorite-channel-2&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>logout
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>logout
 </span></span></code></pre></div><h3 id="configuring-systemd">Configuring Systemd</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo wget -O /etc/systemd/system/gitbot.service https://raw.githubusercontent.com/oshinko/gitbot/draft/gitbot.service
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo wget -O /etc/systemd/system/gitbot.service https://raw.githubusercontent.com/oshinko/gitbot/draft/gitbot.service
 </span></span><span style="display:flex;"><span>sudo systemctl start gitbot.service
 </span></span><span style="display:flex;"><span>sudo systemctl status gitbot.service
 </span></span><span style="display:flex;"><span>sudo systemctl enable gitbot.service
 </span></span><span style="display:flex;"><span>sudo service gitbot restart
 </span></span></code></pre></div><h3 id="cleanup-optional">Cleanup (Optional)</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo rm -r Python-3.6.5
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo rm -r Python-3.6.5
 </span></span><span style="display:flex;"><span>rm Python-3.6.5.tar.xz
 </span></span><span style="display:flex;"><span>sudo apt-get --purge remove build-essential tk-dev
 </span></span><span style="display:flex;"><span>sudo apt-get --purge remove libncurses5-dev libncursesw5-dev libreadline6-dev
@@ -320,7 +320,7 @@ if (!doNotTrack) {
     </ul>
     
     <small>
-        (C) 2018 Osync I/O.
+        (C) 2022 Osync I/O.
         Powered by <a href="https://gohugo.io">Hugo</a>.
     </small>
 </footer>

@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="description" content="野良プログラマーおしんこのブログ">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="@"> 
     <meta name="twitter:site" content="@">
@@ -208,7 +208,7 @@ if (!doNotTrack) {
     <body>
         <header>
     <h1><a href="/">Osync I/O</a></h1>
-    <p>ゲーム好きプログラマーおしんこのブログ</p>
+    <p>野良プログラマーおしんこのブログ</p>
 </header>
 
         
@@ -235,8 +235,8 @@ if (!doNotTrack) {
                 
                     
                         <p class="date">
-                            <time datetime="2019-08-28 22:30:22 &#43;0900">
-                                Last committed on 19/08/28 22:30 &#43;0900
+                            <time datetime="2022-06-18 00:24:12 &#43;0900">
+                                Last committed on 22/06/18 00:24 &#43;0900
                             </time>
                         </p>
                     
@@ -262,7 +262,7 @@ if (!doNotTrack) {
 <h2 id="コントラクトを定義">コントラクトを定義</h2>
 <p>まず最初に Greeter というコントラクトを <code>Greeter.sol</code> ファイルに定義していきます。</p>
 <p>Greeter は、他の誰かに挨拶するためのコントラクトです。予め決めたメッセージで初期化したオブジェクトを、誰かが <code>greet</code> 関数を呼び出すことでメッセージを取得できます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF&gt; Greeter.sol
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt; EOF &gt; Greeter.sol
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">pragma solidity ^0.4.24;
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/* 自己破棄可能なコントラクト */
@@ -311,7 +311,7 @@ if (!doNotTrack) {
 <h3 id="solidity-コンパイラを使用する">Solidity コンパイラを使用する</h3>
 <p>Solidity コンパイラの <code>solc</code> を使用するため、<a href="https://github.com/ethereum/solidity">ドキュメント</a>に従いビルドします。</p>
 <p>次のシェルスクリプトは、ドキュメントのリンク先にある、ソースコードからのビルド手順をまとめたものです。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone --recursive https://github.com/ethereum/solidity.git
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone --recursive https://github.com/ethereum/solidity.git
 </span></span><span style="display:flex;"><span>cd solidity
 </span></span><span style="display:flex;"><span>git checkout v0.4.24  <span style="color:#75715e"># Select from `git tag -l`</span>
 </span></span><span style="display:flex;"><span>./scripts/install_deps.sh
@@ -319,21 +319,21 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>solc  <span style="color:#75715e"># Show help message</span>
 </span></span></code></pre></div><p><code>homebrew</code> の入っていない macOS の場合は、次のようにビルドします。</p>
 <h4 id="installing-boost-on-macos">Installing Boost on macOS</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -OL https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -OL https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz
 </span></span><span style="display:flex;"><span>tar xzf boost_1_66_0.tar.gz
 </span></span><span style="display:flex;"><span>cd boost_1_66_0
 </span></span><span style="display:flex;"><span>./bootstrap.sh
 </span></span><span style="display:flex;"><span>sudo ./b2 install --prefix<span style="color:#f92672">=</span>/usr/local/boost
 </span></span></code></pre></div><h4 id="installing-solidity-on-macos">Installing Solidity on macOS</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone --recursive https://github.com/ethereum/solidity.git
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone --recursive https://github.com/ethereum/solidity.git
 </span></span><span style="display:flex;"><span>cd solidity
 </span></span><span style="display:flex;"><span>git checkout v0.4.24  <span style="color:#75715e"># Select from `git tag -l`</span>
 </span></span><span style="display:flex;"><span>sudo BOOST_ROOT<span style="color:#f92672">=</span>/usr/local/boost scripts/build.sh
 </span></span><span style="display:flex;"><span>solc  <span style="color:#75715e"># Show help message</span>
 </span></span></code></pre></div><p><code>Greeter.sol</code> をコンパイルします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>solc -o target --bin --abi Greeter.sol
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>solc -o target --bin --abi Greeter.sol
 </span></span></code></pre></div><p>次のように target というディレクトリに .abi (Application Binary Interface) と .bin が作成されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tree
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tree
 </span></span><span style="display:flex;"><span>.
 </span></span><span style="display:flex;"><span>├── Greeter.sol
 </span></span><span style="display:flex;"><span>└── target
@@ -421,7 +421,7 @@ if (!doNotTrack) {
     </ul>
     
     <small>
-        (C) 2018 Osync I/O.
+        (C) 2022 Osync I/O.
         Powered by <a href="https://gohugo.io">Hugo</a>.
     </small>
 </footer>

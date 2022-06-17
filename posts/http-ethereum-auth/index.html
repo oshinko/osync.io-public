@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="description" content="野良プログラマーおしんこのブログ">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="@"> 
     <meta name="twitter:site" content="@">
@@ -208,7 +208,7 @@ if (!doNotTrack) {
     <body>
         <header>
     <h1><a href="/">Osync I/O</a></h1>
-    <p>ゲーム好きプログラマーおしんこのブログ</p>
+    <p>野良プログラマーおしんこのブログ</p>
 </header>
 
         
@@ -235,8 +235,8 @@ if (!doNotTrack) {
                 
                     
                         <p class="date">
-                            <time datetime="2019-08-28 22:30:22 &#43;0900">
-                                Last committed on 19/08/28 22:30 &#43;0900
+                            <time datetime="2022-06-18 00:24:12 &#43;0900">
+                                Last committed on 22/06/18 00:24 &#43;0900
                             </time>
                         </p>
                     
@@ -263,16 +263,16 @@ if (!doNotTrack) {
 <p>具体的な実装は、 <a href="https://github.com/oshinko/pyhttpauth">Python パッケージ</a>で確認できます。</p>
 <h2 id="使い方">使い方</h2>
 <p>仕様はシンプルで、次のようにアドレスと署名を Authorization ヘッダに記述することにより、検証および認証を行います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST -H <span style="color:#e6db74">&#34;Authorization: Ethereum </span>$ADDR<span style="color:#e6db74"> </span>$SIGN<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -X POST -H <span style="color:#e6db74">&#34;Authorization: Ethereum </span>$ADDR<span style="color:#e6db74"> </span>$SIGN<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     http://localhost:8080/ethereum/addresses
 </span></span></code></pre></div><h2 id="動作確認">動作確認</h2>
 <p>実際に簡単なサーバーを作っていきます。</p>
 <p>事前に <code>osnk.httpauth</code> と <code>osnk.validations</code> をインストールしてください。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python -m pip install -U -e git+https://github.com/oshinko/pyvalidation.git#egg<span style="color:#f92672">=</span>validation
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install -U -e git+https://github.com/oshinko/pyvalidation.git#egg<span style="color:#f92672">=</span>validation
 </span></span><span style="display:flex;"><span>python -m pip install -U -e git+https://github.com/oshinko/pyhttpauth.git#egg<span style="color:#f92672">=</span>httpauth
 </span></span></code></pre></div><p><a href="http://flask.pocoo.org">Flask</a> を使って作っていきます。
 他のお好みのフレームワークでもいいと思います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF&gt; run.py
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt; EOF &gt; run.py
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">from flask import Flask, jsonify, request
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">from osnk.httpauth import EthereumAuthentication
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">from osnk.validations import requires
@@ -350,7 +350,7 @@ if (!doNotTrack) {
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    app.run(host=&#39;0.0.0.0&#39;, port=8080, debug=True)
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
 </span></span></code></pre></div><p>サーバーを起動します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python run.py
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python run.py
 </span></span></code></pre></div><p>スクリプト実行後、 <a href="http://localhost:8080">localhost:8080</a> にアクセスすると動作確認ができます。</p>
 <p>以上、 Ethereum Address の所有権の証明をする上での参考になればと思います。</p>
 </section>
@@ -371,7 +371,7 @@ if (!doNotTrack) {
     </ul>
     
     <small>
-        (C) 2018 Osync I/O.
+        (C) 2022 Osync I/O.
         Powered by <a href="https://gohugo.io">Hugo</a>.
     </small>
 </footer>

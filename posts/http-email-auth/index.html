@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="description" content="野良プログラマーおしんこのブログ">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="@"> 
     <meta name="twitter:site" content="@">
@@ -208,7 +208,7 @@ if (!doNotTrack) {
     <body>
         <header>
     <h1><a href="/">Osync I/O</a></h1>
-    <p>ゲーム好きプログラマーおしんこのブログ</p>
+    <p>野良プログラマーおしんこのブログ</p>
 </header>
 
         
@@ -235,8 +235,8 @@ if (!doNotTrack) {
                 
                     
                         <p class="date">
-                            <time datetime="2019-08-28 22:30:22 &#43;0900">
-                                Last committed on 19/08/28 22:30 &#43;0900
+                            <time datetime="2022-06-18 00:24:12 &#43;0900">
+                                Last committed on 22/06/18 00:24 &#43;0900
                             </time>
                         </p>
                     
@@ -265,7 +265,7 @@ if (!doNotTrack) {
 <h2 id="認証を開始する">認証を開始する</h2>
 <p><code>POST /email/auth</code> が認証を開始する API と仮定します。</p>
 <p>HTTP リクエストと同時に、本文にパスワードを含んだメールが送信されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl -v -d <span style="color:#e6db74">&#39;[&#34;me@domain&#34;]&#39;</span> http://localhost:8080/email/auth
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ curl -v -d <span style="color:#e6db74">&#39;[&#34;me@domain&#34;]&#39;</span> http://localhost:8080/email/auth
 </span></span><span style="display:flex;"><span>*   Trying 127.0.0.1...
 </span></span><span style="display:flex;"><span>* TCP_NODELAY set
 </span></span><span style="display:flex;"><span>* Connected to 127.0.0.1 <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span> port <span style="color:#ae81ff">8080</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
@@ -288,12 +288,12 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>* Closing connection <span style="color:#ae81ff">0</span>
 </span></span></code></pre></div><p>レスポンスボディには、 Hint と呼ばれるトークンが含まれます。</p>
 <p>Hint を環境変数に設定するには、次のようなコマンドを実行します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>HINT<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>curl -d <span style="color:#e6db74">&#39;[&#34;me@domain&#34;]&#39;</span> http://localhost:8080/email/auth | sed -e <span style="color:#e6db74">&#39;s/^&#34;//&#39;</span> -e <span style="color:#e6db74">&#39;s/&#34;$//&#39;</span><span style="color:#e6db74">`</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>HINT<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>curl -d <span style="color:#e6db74">&#39;[&#34;me@domain&#34;]&#39;</span> http://localhost:8080/email/auth | sed -e <span style="color:#e6db74">&#39;s/^&#34;//&#39;</span> -e <span style="color:#e6db74">&#39;s/&#34;$//&#39;</span><span style="color:#e6db74">`</span>
 </span></span></code></pre></div><h2 id="アクセストークンを取得する">アクセストークンを取得する</h2>
 <p>次に、メールに送信された認可情報を提示して、アクセストークンを取得します。</p>
 <p>認可情報は、 Authorization ヘッダにあるように、メールアドレスとパスワードの組み合わせに <code>POST /email/auth</code> で得た Hint を加えた情報です。</p>
 <p><code>GET /email/token</code> が、その役割を担う API と仮定します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ADDR<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>echo -n me@domain | base64<span style="color:#e6db74">`</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ ADDR<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>echo -n me@domain | base64<span style="color:#e6db74">`</span>
 </span></span><span style="display:flex;"><span>$ PASS<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>echo -n $RECEIVED_PASSWORD | base64<span style="color:#e6db74">`</span>
 </span></span><span style="display:flex;"><span>$ curl -v -H <span style="color:#e6db74">&#34;Authorization: Email </span>$ADDR<span style="color:#e6db74"> </span>$PASS<span style="color:#e6db74"> </span>$HINT<span style="color:#e6db74">&#34;</span> http://localhost:8080/email/token
 </span></span><span style="display:flex;"><span>*   Trying 127.0.0.1...
@@ -316,12 +316,12 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>* Closing connection <span style="color:#ae81ff">0</span>
 </span></span></code></pre></div><p>メールアドレスとパスワードは、任意のデータを許容する目的で Base64 エンコードを施します。</p>
 <p>アクセストークンを環境変数に設定するには、次のようなコマンドを実行します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>curl -H <span style="color:#e6db74">&#34;Authorization: Email </span>$ADDR<span style="color:#e6db74"> </span>$PASS<span style="color:#e6db74"> </span>$HINT<span style="color:#e6db74">&#34;</span> http://localhost:8080/email/token | sed -e <span style="color:#e6db74">&#39;s/^&#34;//&#39;</span> -e <span style="color:#e6db74">&#39;s/&#34;$//&#39;</span><span style="color:#e6db74">`</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>curl -H <span style="color:#e6db74">&#34;Authorization: Email </span>$ADDR<span style="color:#e6db74"> </span>$PASS<span style="color:#e6db74"> </span>$HINT<span style="color:#e6db74">&#34;</span> http://localhost:8080/email/token | sed -e <span style="color:#e6db74">&#39;s/^&#34;//&#39;</span> -e <span style="color:#e6db74">&#39;s/&#34;$//&#39;</span><span style="color:#e6db74">`</span>
 </span></span></code></pre></div><h2 id="hint-について">Hint について</h2>
 <p>Hint は、認証を開始してからの有効期限と、ユーザー任意のペイロード、認可情報の HMAC 署名を含むトークンです。</p>
 <p>メールアドレスに送信されるパスワードをサーバーの秘密鍵で暗号化したデータであり、これを参照して認証を行います。</p>
 <p>次の疑似コードは、 Hint の作成例です。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Secret <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Your secret words&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>Secret <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Your secret words&#34;</span>
 </span></span><span style="display:flex;"><span>Address <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;me@domain&#34;</span>
 </span></span><span style="display:flex;"><span>Password <span style="color:#f92672">=</span> RANDOM<span style="color:#f92672">()</span>
 </span></span><span style="display:flex;"><span>Expires <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2018-01-01T00:00:00&#34;</span>
@@ -332,7 +332,7 @@ if (!doNotTrack) {
 </span></span></code></pre></div><h2 id="認証により保護されたリソースにアクセスする">認証により保護されたリソースにアクセスする</h2>
 <p>最後に、保護されたリソースにアクセスする一例を示します。</p>
 <p>メール認証によって得られたアクセストークンをサーバーに提示することで、アクセス権を証明します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl -v -H <span style="color:#e6db74">&#34;Authorization: Email-Token </span>$TOKEN<span style="color:#e6db74">&#34;</span> http://localhost:8080/locked/contents
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ curl -v -H <span style="color:#e6db74">&#34;Authorization: Email-Token </span>$TOKEN<span style="color:#e6db74">&#34;</span> http://localhost:8080/locked/contents
 </span></span><span style="display:flex;"><span>*   Trying 127.0.0.1...
 </span></span><span style="display:flex;"><span>* TCP_NODELAY set
 </span></span><span style="display:flex;"><span>* Connected to localhost <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span> port <span style="color:#ae81ff">8080</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
@@ -372,7 +372,7 @@ if (!doNotTrack) {
     </ul>
     
     <small>
-        (C) 2018 Osync I/O.
+        (C) 2022 Osync I/O.
         Powered by <a href="https://gohugo.io">Hugo</a>.
     </small>
 </footer>
