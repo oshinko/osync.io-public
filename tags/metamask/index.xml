@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MetaMask on Osync I/O</title>
+    <link>http://osync.io/tags/metamask/</link>
+    <description>Recent content in MetaMask on Osync I/O</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 19 Jun 2018 18:00:00 +0900</lastBuildDate><atom:link href="http://osync.io/tags/metamask/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MetaMask Signing</title>
+      <link>http://osync.io/posts/metamask-signing/</link>
+      <pubDate>Tue, 19 Jun 2018 18:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/metamask-signing/</guid>
+      <description>MetaMask を介したメッセージ署名を行いました。 MetaMask を準備 MetaMask は Chrome 拡張機能です。下記からダウンロードください。 HTML を作成 MetaMask が用意した Ethereum web3 API を実行する HTML フ</description>
+    </item>
+    
+  </channel>
+</rss>

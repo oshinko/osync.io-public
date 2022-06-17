@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@"> 
+    <meta name="twitter:site" content="@">
+    <meta property="og:url" content="http://osync.io/posts/http-email-auth/">
+    
+        <meta property="og:title" content="HTTP Email Authentication - Osync I/O"> 
+    
+    <meta property="og:description" content="Email を利用した HTTP 認証スキームです。 メールによるワンタイムパスワードなど、パスワードレス認証の実現を目的とした、 HMAC ベースのテンポラリトークン認証">
+    <meta property="og:image" content="http://osync.io/images/headers/http-email-auth.jpg">
+    
+        <title>HTTP Email Authentication - Osync I/O</title>
+    
+    <link rel="stylesheet" href="/fonts/FiraCode/fira_code.css">
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JQCHZM9PGG"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-JQCHZM9PGG', { 'anonymize_ip': false });
+}
+</script>
+
+    <style>
+        @font-face {
+            font-family: flop;
+            src: url(/fonts/flop/FLOPDesignFont.woff2) format("woff2"),
+                 url(/fonts/flop/FLOPDesignFont.woff) format("woff");
+            font-weight: 400;
+        }
+        img {
+            max-width: 100%;
+        }
+        body {
+            margin: 0;
+            font-family: flop, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #e7f4ff;
+        }
+        a {
+            color: #499bea;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #304999;
+        }
+        pre code {
+            background-color: #eee;
+            border: 1px solid #999;
+            display: block;
+            padding: 1em;
+            line-height: 1.4em;
+            font-family: 'Fira Code', monospace;
+            overflow: auto;
+        }
+        header {
+            padding: 1em;
+            background: linear-gradient(to top, #499bea 0%, #304999 100%);
+            color: #b6cee2;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0 0 .4em 0;
+            color: #fff;
+        }
+        header h1 a {
+            color: inherit;
+            text-decoration: none;
+        }
+        header h1 a:hover {
+            color: #b6cee2;
+        }
+        header p {
+            margin: 0;
+            font-size: .8em;
+        }
+        nav {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            nav {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        nav li {
+            display: inline;
+            line-height: 1.6;
+            padding-bottom: .4em;
+            border-bottom: 2px solid #fff;
+        }
+        nav li.selected {
+            border-bottom: 2px solid #cc0051;
+        }
+        main {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            main {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        article {
+            margin: 1.5em 0;
+            padding: 1em;
+            background-color: #fff;
+        }
+        article h1 {
+            margin: 0 0 .6em 0;
+            font-size: 1.5em;
+        }
+        article h2 {
+            position: relative;
+            padding: .6em 1em;
+            background-color: #61a5e4;
+            border-radius: 7px;
+            color: white;
+            font-size: 1.25em;
+        }
+        article h2:after {
+            position: absolute;
+            content: '';
+            top: 100%;
+            left: 30px;
+            border: 8px solid transparent;
+            border-top: 8px solid #61a5e4;
+            width: 0;
+            height: 0;
+        }
+        article h3 {
+            padding: .25em 0 .25em .6em;
+            border-left: .4em solid #499bea;
+            font-size: 1.125em;
+        }
+        article > ul {
+            margin: 1em 0;
+            padding: 0;
+            list-style: none;
+            font-size: .8em;
+        }
+        article > ul li {
+            display: inline;
+            line-height: 1.6;
+        }
+        article .date {
+            font-size: .8em;
+        }
+        section li {
+            line-height: 1.6;
+        }
+        footer {
+            margin: 1em;
+        }
+        footer ul {
+            margin: 0;
+            padding: 0 0 0;
+            list-style: none;
+            text-align: center;
+        }
+        footer li {
+            display: inline;
+            line-height: 1.6;
+        }
+        footer small {
+            display: block;
+            margin: 1em;
+            text-align: center;
+            color: #666;
+        }
+        .responsive {
+            position: relative;
+            padding-bottom: 75%;
+        }
+        .responsive > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+        }
+        ul.pagination {
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, Sans-Serif;
+        }
+        ul.pagination li {
+            display: inline;
+            padding: .2em;
+        }
+    </style>
+</head>
+
+    <body>
+        <header>
+    <h1><a href="/">Osync I/O</a></h1>
+    <p>ゲーム好きプログラマーおしんこのブログ</p>
+</header>
+
+        
+
+<nav>
+    <ul>
+        
+            <li>
+                <a href="/posts">Posts</a></li>
+        
+            <li>
+                <a href="/tags">Tags</a></li>
+        
+            <li>
+                <a href="/about">About</a></li>
+        
+    </ul>
+</nav>
+
+
+        <main>
+            <article>
+                <h1><a href="/posts/http-email-auth/">HTTP Email Authentication</a></h1>
+                
+                    
+                        <p class="date">
+                            <time datetime="2019-08-28 22:30:22 &#43;0900">
+                                Last committed on 19/08/28 22:30 &#43;0900
+                            </time>
+                        </p>
+                    
+                    <p class="date">
+                        <time datetime="2018-07-21T22:30:00Z&#43;0900">
+                            Posted on 18/07/21 22:30 &#43;0900
+                        </time>
+                    </p>
+                
+                
+                    <ul>
+                        
+                            <li><a href="/tags/http">http</a></li>
+                        
+                            <li><a href="/tags/email">email</a></li>
+                        
+                            <li><a href="/tags/auth">auth</a></li>
+                        
+                    </ul>
+                
+                <img src="/images/headers/http-email-auth.jpg">
+                
+                <section><p>Email を利用した HTTP 認証スキームです。</p>
+<p>メールによるワンタイムパスワードなど、パスワードレス認証の実現を目的とした、 HMAC ベースのテンポラリトークン認証スキームとなっています。</p>
+<p>具体的な実装は、 <a href="https://github.com/oshinko/pyhttpauth">Python パッケージ</a>で確認できます。</p>
+<h2 id="認証を開始する">認証を開始する</h2>
+<p><code>POST /email/auth</code> が認証を開始する API と仮定します。</p>
+<p>HTTP リクエストと同時に、本文にパスワードを含んだメールが送信されます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl -v -d <span style="color:#e6db74">&#39;[&#34;me@domain&#34;]&#39;</span> http://localhost:8080/email/auth
+</span></span><span style="display:flex;"><span>*   Trying 127.0.0.1...
+</span></span><span style="display:flex;"><span>* TCP_NODELAY set
+</span></span><span style="display:flex;"><span>* Connected to 127.0.0.1 <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span> port <span style="color:#ae81ff">8080</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+</span></span><span style="display:flex;"><span>&gt; POST /email/auth HTTP/1.1
+</span></span><span style="display:flex;"><span>&gt; Host: 127.0.0.1:8080
+</span></span><span style="display:flex;"><span>&gt; User-Agent: curl/7.54.0
+</span></span><span style="display:flex;"><span>&gt; Accept: */*
+</span></span><span style="display:flex;"><span>&gt; Content-Length: <span style="color:#ae81ff">13</span>
+</span></span><span style="display:flex;"><span>&gt; Content-Type: application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span>&gt; 
+</span></span><span style="display:flex;"><span>* upload completely sent off: <span style="color:#ae81ff">13</span> out of <span style="color:#ae81ff">13</span> bytes
+</span></span><span style="display:flex;"><span>* HTTP 1.0, assume close after body
+</span></span><span style="display:flex;"><span>&lt; HTTP/1.0 <span style="color:#ae81ff">200</span> OK
+</span></span><span style="display:flex;"><span>&lt; Content-Type: application/json
+</span></span><span style="display:flex;"><span>&lt; Content-Length: <span style="color:#ae81ff">71</span>
+</span></span><span style="display:flex;"><span>&lt; Server: Werkzeug/0.14.1 Python/3.7.0
+</span></span><span style="display:flex;"><span>&lt; Date: Sat, <span style="color:#ae81ff">21</span> Jul <span style="color:#ae81ff">2018</span> 11:00:05 GMT
+</span></span><span style="display:flex;"><span>&lt; 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;BFtTJNUNWyJtZUBkb21haW4iXV9ord26MiebdfzlAtj6+cU6huRLELVo3og6NeFHfHcP&#34;</span>
+</span></span><span style="display:flex;"><span>* Closing connection <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>レスポンスボディには、 Hint と呼ばれるトークンが含まれます。</p>
+<p>Hint を環境変数に設定するには、次のようなコマンドを実行します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>HINT<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>curl -d <span style="color:#e6db74">&#39;[&#34;me@domain&#34;]&#39;</span> http://localhost:8080/email/auth | sed -e <span style="color:#e6db74">&#39;s/^&#34;//&#39;</span> -e <span style="color:#e6db74">&#39;s/&#34;$//&#39;</span><span style="color:#e6db74">`</span>
+</span></span></code></pre></div><h2 id="アクセストークンを取得する">アクセストークンを取得する</h2>
+<p>次に、メールに送信された認可情報を提示して、アクセストークンを取得します。</p>
+<p>認可情報は、 Authorization ヘッダにあるように、メールアドレスとパスワードの組み合わせに <code>POST /email/auth</code> で得た Hint を加えた情報です。</p>
+<p><code>GET /email/token</code> が、その役割を担う API と仮定します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ADDR<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>echo -n me@domain | base64<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>$ PASS<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>echo -n $RECEIVED_PASSWORD | base64<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>$ curl -v -H <span style="color:#e6db74">&#34;Authorization: Email </span>$ADDR<span style="color:#e6db74"> </span>$PASS<span style="color:#e6db74"> </span>$HINT<span style="color:#e6db74">&#34;</span> http://localhost:8080/email/token
+</span></span><span style="display:flex;"><span>*   Trying 127.0.0.1...
+</span></span><span style="display:flex;"><span>* TCP_NODELAY set
+</span></span><span style="display:flex;"><span>* Connected to localhost <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span> port <span style="color:#ae81ff">8080</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+</span></span><span style="display:flex;"><span>&gt; GET /email/token HTTP/1.1
+</span></span><span style="display:flex;"><span>&gt; Host: localhost:8080
+</span></span><span style="display:flex;"><span>&gt; User-Agent: curl/7.54.0
+</span></span><span style="display:flex;"><span>&gt; Accept: */*
+</span></span><span style="display:flex;"><span>&gt; Authorization: Email bWVAZG9tYWlu WERPRUFSU1FRSlA1 BFtTJNUNWyJtZUBkb21haW4iXV9ord26MiebdfzlAtj6+cU6huRLELVo3og6NeFHfHcP
+</span></span><span style="display:flex;"><span>&gt; 
+</span></span><span style="display:flex;"><span>* HTTP 1.0, assume close after body
+</span></span><span style="display:flex;"><span>&lt; HTTP/1.0 <span style="color:#ae81ff">200</span> OK
+</span></span><span style="display:flex;"><span>&lt; Content-Type: application/json
+</span></span><span style="display:flex;"><span>&lt; Content-Length: <span style="color:#ae81ff">71</span>
+</span></span><span style="display:flex;"><span>&lt; Server: Werkzeug/0.14.1 Python/3.7.0
+</span></span><span style="display:flex;"><span>&lt; Date: Sat, <span style="color:#ae81ff">21</span> Jul <span style="color:#ae81ff">2018</span> 11:22:48 GMT
+</span></span><span style="display:flex;"><span>&lt; 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;BFtTJZgNWyJtZUBkb21haW4iXbr2VN4a4l0+wARNQSuyx7AldqU6V9PEojuqHxmCUmD9&#34;</span>
+</span></span><span style="display:flex;"><span>* Closing connection <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>メールアドレスとパスワードは、任意のデータを許容する目的で Base64 エンコードを施します。</p>
+<p>アクセストークンを環境変数に設定するには、次のようなコマンドを実行します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>curl -H <span style="color:#e6db74">&#34;Authorization: Email </span>$ADDR<span style="color:#e6db74"> </span>$PASS<span style="color:#e6db74"> </span>$HINT<span style="color:#e6db74">&#34;</span> http://localhost:8080/email/token | sed -e <span style="color:#e6db74">&#39;s/^&#34;//&#39;</span> -e <span style="color:#e6db74">&#39;s/&#34;$//&#39;</span><span style="color:#e6db74">`</span>
+</span></span></code></pre></div><h2 id="hint-について">Hint について</h2>
+<p>Hint は、認証を開始してからの有効期限と、ユーザー任意のペイロード、認可情報の HMAC 署名を含むトークンです。</p>
+<p>メールアドレスに送信されるパスワードをサーバーの秘密鍵で暗号化したデータであり、これを参照して認証を行います。</p>
+<p>次の疑似コードは、 Hint の作成例です。</p>
+<pre tabindex="0"><code>Secret = &#34;Your secret words&#34;
+Address = &#34;me@domain&#34;
+Password = RANDOM()
+Expires = &#34;2018-01-01T00:00:00&#34;
+Payload = &#34;Hello!&#34;
+Answer = Address + &#34; &#34; + Password + &#34; &#34; + Expires + &#34; &#34; + Payload
+Signature = HMACSHA256(Secret, Answer)
+Hint = BASE64(Expires + Payload + Signature)
+</code></pre><h2 id="認証により保護されたリソースにアクセスする">認証により保護されたリソースにアクセスする</h2>
+<p>最後に、保護されたリソースにアクセスする一例を示します。</p>
+<p>メール認証によって得られたアクセストークンをサーバーに提示することで、アクセス権を証明します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl -v -H <span style="color:#e6db74">&#34;Authorization: Email-Token </span>$TOKEN<span style="color:#e6db74">&#34;</span> http://localhost:8080/locked/contents
+</span></span><span style="display:flex;"><span>*   Trying 127.0.0.1...
+</span></span><span style="display:flex;"><span>* TCP_NODELAY set
+</span></span><span style="display:flex;"><span>* Connected to localhost <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span> port <span style="color:#ae81ff">8080</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+</span></span><span style="display:flex;"><span>&gt; GET /locked/contents HTTP/1.1
+</span></span><span style="display:flex;"><span>&gt; Host: localhost:8080
+</span></span><span style="display:flex;"><span>&gt; User-Agent: curl/7.54.0
+</span></span><span style="display:flex;"><span>&gt; Accept: */*
+</span></span><span style="display:flex;"><span>&gt; Authorization: Email-Token BFtTPhgNWyJtZUBkb21haW4iXbhKH/OE+DIYewHWFsiAZpL9zPgybYZDm423EhPzrzDT
+</span></span><span style="display:flex;"><span>&gt; 
+</span></span><span style="display:flex;"><span>* HTTP 1.0, assume close after body
+</span></span><span style="display:flex;"><span>&lt; HTTP/1.0 <span style="color:#ae81ff">200</span> OK
+</span></span><span style="display:flex;"><span>&lt; Content-Type: application/json
+</span></span><span style="display:flex;"><span>&lt; Content-Length: <span style="color:#ae81ff">29</span>
+</span></span><span style="display:flex;"><span>&lt; Server: Werkzeug/0.14.1 Python/3.7.0
+</span></span><span style="display:flex;"><span>&lt; Date: Sat, <span style="color:#ae81ff">21</span> Jul <span style="color:#ae81ff">2018</span> 13:07:30 GMT
+</span></span><span style="display:flex;"><span>&lt; 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;welcome&#34;</span>: <span style="color:#e6db74">&#34;me@domain&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>* Closing connection <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>以上、メール認証によって証明されたアドレスの所有権がないと取得できない情報や、操作できない機能を実装する上での参考になればと思います。</p>
+</section>
+            </article>
+        </main>
+        <footer>
+    
+    <ul>
+        
+            <li><a href="https://discord.gg/JhgFz8u">Discord</a></li>
+        
+            <li><a href="https://github.com/oshinko">GitHub</a></li>
+        
+            <li><a href="https://twitter.com/Osynco">Twitter</a></li>
+        
+            <li><a href="https://steamcommunity.com/id/Osh1nko">Steam</a></li>
+        
+    </ul>
+    
+    <small>
+        (C) 2018 Osync I/O.
+        Powered by <a href="https://gohugo.io">Hugo</a>.
+    </small>
+</footer>
+
+    </body>
+</html>

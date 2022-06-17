@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ethereum on Osync I/O</title>
+    <link>http://osync.io/tags/ethereum/</link>
+    <description>Recent content in Ethereum on Osync I/O</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 11 Aug 2018 19:00:00 +0900</lastBuildDate><atom:link href="http://osync.io/tags/ethereum/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTTP Ethereum Authentication</title>
+      <link>http://osync.io/posts/http-ethereum-auth/</link>
+      <pubDate>Sat, 11 Aug 2018 19:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/http-ethereum-auth/</guid>
+      <description>Ethereum アドレスを検証する HTTP 認証スキームです。 具体的な実装は、 Python パッケージで確認できます。 使い方 仕様はシンプルで、次のようにアドレスと署名を Authorization ヘッ</description>
+    </item>
+    
+    <item>
+      <title>Ethereum Hello World Contract</title>
+      <link>http://osync.io/posts/ethereum-hello-world-contract/</link>
+      <pubDate>Fri, 22 Jun 2018 16:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/ethereum-hello-world-contract/</guid>
+      <description>この記事では、実際のスマートコントラクト (DApps) を Hello World Contract チュートリアルに沿って動かしています。 事前に Ethereum プライベートネットを構築しておくと、ブロック</description>
+    </item>
+    
+    <item>
+      <title>Ethereum Private Network</title>
+      <link>http://osync.io/posts/ethereum-private-network/</link>
+      <pubDate>Wed, 20 Jun 2018 22:15:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/ethereum-private-network/</guid>
+      <description>スマートコントラクト (DApps) の開発を行うために、イーサリアムの公式 CLI である Geth を使用して、プライベートネットワークを構築していきます。 開発環境のディ</description>
+    </item>
+    
+    <item>
+      <title>MetaMask Signing</title>
+      <link>http://osync.io/posts/metamask-signing/</link>
+      <pubDate>Tue, 19 Jun 2018 18:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/metamask-signing/</guid>
+      <description>MetaMask を介したメッセージ署名を行いました。 MetaMask を準備 MetaMask は Chrome 拡張機能です。下記からダウンロードください。 HTML を作成 MetaMask が用意した Ethereum web3 API を実行する HTML フ</description>
+    </item>
+    
+  </channel>
+</rss>

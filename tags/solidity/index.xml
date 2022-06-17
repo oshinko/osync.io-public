@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Solidity on Osync I/O</title>
+    <link>http://osync.io/tags/solidity/</link>
+    <description>Recent content in Solidity on Osync I/O</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 22 Jun 2018 16:00:00 +0900</lastBuildDate><atom:link href="http://osync.io/tags/solidity/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ethereum Hello World Contract</title>
+      <link>http://osync.io/posts/ethereum-hello-world-contract/</link>
+      <pubDate>Fri, 22 Jun 2018 16:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/ethereum-hello-world-contract/</guid>
+      <description>この記事では、実際のスマートコントラクト (DApps) を Hello World Contract チュートリアルに沿って動かしています。 事前に Ethereum プライベートネットを構築しておくと、ブロック</description>
+    </item>
+    
+  </channel>
+</rss>

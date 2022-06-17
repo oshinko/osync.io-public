@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PUBG on Osync I/O</title>
+    <link>http://osync.io/tags/pubg/</link>
+    <description>Recent content in PUBG on Osync I/O</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 12 May 2018 12:00:00 +0900</lastBuildDate><atom:link href="http://osync.io/tags/pubg/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ゲーミング PC</title>
+      <link>http://osync.io/posts/gaming-pc/</link>
+      <pubDate>Sat, 12 May 2018 12:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/gaming-pc/</guid>
+      <description>PUBG やりたかったので、ゲーミングマシンを組みました。 Specs: CPU: AMD Ryzen 7 2700X Motherboard: ASRock X470 Taichi Ultimate RAM: F4-2933C14D-32GTZRX (DDR4 PC4-23400 16GB x 2) OS: Windows 10 Home Storage: Samsung SSD 500GB 960EVO GPU: ZOTAC GeForce GTX 1080 Ti AMP Extreme Power: Seasonic SSR-850TR Chassis: CA-1J7-00M1WN-01 VIEW 37 RGB Plus Mouse:</description>
+    </item>
+    
+  </channel>
+</rss>

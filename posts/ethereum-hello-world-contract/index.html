@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@"> 
+    <meta name="twitter:site" content="@">
+    <meta property="og:url" content="http://osync.io/posts/ethereum-hello-world-contract/">
+    
+        <meta property="og:title" content="Ethereum Hello World Contract - Osync I/O"> 
+    
+    <meta property="og:description" content="この記事では、実際のスマートコントラクト (DApps) を Hello World Contract チュートリアルに沿って動かしています。 事前に Ethereum プライベートネットを構築しておくと、ブロック">
+    <meta property="og:image" content="http://osync.io/images/headers/solidity.png">
+    
+        <title>Ethereum Hello World Contract - Osync I/O</title>
+    
+    <link rel="stylesheet" href="/fonts/FiraCode/fira_code.css">
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JQCHZM9PGG"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-JQCHZM9PGG', { 'anonymize_ip': false });
+}
+</script>
+
+    <style>
+        @font-face {
+            font-family: flop;
+            src: url(/fonts/flop/FLOPDesignFont.woff2) format("woff2"),
+                 url(/fonts/flop/FLOPDesignFont.woff) format("woff");
+            font-weight: 400;
+        }
+        img {
+            max-width: 100%;
+        }
+        body {
+            margin: 0;
+            font-family: flop, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #e7f4ff;
+        }
+        a {
+            color: #499bea;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #304999;
+        }
+        pre code {
+            background-color: #eee;
+            border: 1px solid #999;
+            display: block;
+            padding: 1em;
+            line-height: 1.4em;
+            font-family: 'Fira Code', monospace;
+            overflow: auto;
+        }
+        header {
+            padding: 1em;
+            background: linear-gradient(to top, #499bea 0%, #304999 100%);
+            color: #b6cee2;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0 0 .4em 0;
+            color: #fff;
+        }
+        header h1 a {
+            color: inherit;
+            text-decoration: none;
+        }
+        header h1 a:hover {
+            color: #b6cee2;
+        }
+        header p {
+            margin: 0;
+            font-size: .8em;
+        }
+        nav {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            nav {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        nav li {
+            display: inline;
+            line-height: 1.6;
+            padding-bottom: .4em;
+            border-bottom: 2px solid #fff;
+        }
+        nav li.selected {
+            border-bottom: 2px solid #cc0051;
+        }
+        main {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            main {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        article {
+            margin: 1.5em 0;
+            padding: 1em;
+            background-color: #fff;
+        }
+        article h1 {
+            margin: 0 0 .6em 0;
+            font-size: 1.5em;
+        }
+        article h2 {
+            position: relative;
+            padding: .6em 1em;
+            background-color: #61a5e4;
+            border-radius: 7px;
+            color: white;
+            font-size: 1.25em;
+        }
+        article h2:after {
+            position: absolute;
+            content: '';
+            top: 100%;
+            left: 30px;
+            border: 8px solid transparent;
+            border-top: 8px solid #61a5e4;
+            width: 0;
+            height: 0;
+        }
+        article h3 {
+            padding: .25em 0 .25em .6em;
+            border-left: .4em solid #499bea;
+            font-size: 1.125em;
+        }
+        article > ul {
+            margin: 1em 0;
+            padding: 0;
+            list-style: none;
+            font-size: .8em;
+        }
+        article > ul li {
+            display: inline;
+            line-height: 1.6;
+        }
+        article .date {
+            font-size: .8em;
+        }
+        section li {
+            line-height: 1.6;
+        }
+        footer {
+            margin: 1em;
+        }
+        footer ul {
+            margin: 0;
+            padding: 0 0 0;
+            list-style: none;
+            text-align: center;
+        }
+        footer li {
+            display: inline;
+            line-height: 1.6;
+        }
+        footer small {
+            display: block;
+            margin: 1em;
+            text-align: center;
+            color: #666;
+        }
+        .responsive {
+            position: relative;
+            padding-bottom: 75%;
+        }
+        .responsive > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+        }
+        ul.pagination {
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, Sans-Serif;
+        }
+        ul.pagination li {
+            display: inline;
+            padding: .2em;
+        }
+    </style>
+</head>
+
+    <body>
+        <header>
+    <h1><a href="/">Osync I/O</a></h1>
+    <p>ゲーム好きプログラマーおしんこのブログ</p>
+</header>
+
+        
+
+<nav>
+    <ul>
+        
+            <li>
+                <a href="/posts">Posts</a></li>
+        
+            <li>
+                <a href="/tags">Tags</a></li>
+        
+            <li>
+                <a href="/about">About</a></li>
+        
+    </ul>
+</nav>
+
+
+        <main>
+            <article>
+                <h1><a href="/posts/ethereum-hello-world-contract/">Ethereum Hello World Contract</a></h1>
+                
+                    
+                        <p class="date">
+                            <time datetime="2019-08-28 22:30:22 &#43;0900">
+                                Last committed on 19/08/28 22:30 &#43;0900
+                            </time>
+                        </p>
+                    
+                    <p class="date">
+                        <time datetime="2018-06-22T16:00:00Z&#43;0900">
+                            Posted on 18/06/22 16:00 &#43;0900
+                        </time>
+                    </p>
+                
+                
+                    <ul>
+                        
+                            <li><a href="/tags/ethereum">ethereum</a></li>
+                        
+                            <li><a href="/tags/solidity">solidity</a></li>
+                        
+                    </ul>
+                
+                <img src="/images/headers/solidity.png">
+                
+                <section><p>この記事では、実際のスマートコントラクト (DApps) を <a href="https://www.ethereum.org/greeter">Hello World Contract チュートリアル</a>に沿って動かしています。</p>
+<p>事前に <a href="/posts/ethereum-private-network/">Ethereum プライベートネットを構築</a>しておくと、ブロック同期や Gas 支払いのために使われる Ether を採掘する待ち時間が短くなり、ストレスを溜めずに進められます。</p>
+<h2 id="コントラクトを定義">コントラクトを定義</h2>
+<p>まず最初に Greeter というコントラクトを <code>Greeter.sol</code> ファイルに定義していきます。</p>
+<p>Greeter は、他の誰かに挨拶するためのコントラクトです。予め決めたメッセージで初期化したオブジェクトを、誰かが <code>greet</code> 関数を呼び出すことでメッセージを取得できます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF&gt; Greeter.sol
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">pragma solidity ^0.4.24;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/* 自己破棄可能なコントラクト */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">contract Mortal {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    /* コントラクト所有者のアドレス */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    address owner;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    /* 初期化時に呼ばれる関数 */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    constructor() public {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        owner = msg.sender;  // 所有者を設定
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    /* 自己破棄する関数 */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    function kill() public {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        if (msg.sender == owner) {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            // コントラクトに格納された Ether を回収した後、
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            // ストレージとコードを削除する。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            selfdestruct(owner);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/* 挨拶コントラクト */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">contract Greeter is Mortal {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    /* メッセージ */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    bytes32 greeting;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    /* 初期化時に呼ばれる関数 */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    constructor(bytes32 _greeting) public {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        greeting = _greeting;  // メッセージを設定
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    /* メッセージを取得する関数 */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    function greet() public view returns (bytes32) {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        return greeting;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p>Mortal は、 <code>kill</code> 関数による自己破棄可能なコントラクトで、この特性は Greeter に継承されます。所有者だけが <code>kill</code> 関数を呼び出すことが出来ます。コントラクトが必要なくなった時にブロックチェーンを掃除し、資金を回収する目的があります。これを定義しないと展開した後に破棄することが出来ないので、実装を検討してください。</p>
+<h2 id="コンパイル">コンパイル</h2>
+<p>次の二つの方法があります。</p>
+<ul>
+<li>Solidity コンパイラを使用する</li>
+<li>Web ベースの Solidity IDE である Remix を使用する</li>
+</ul>
+<h3 id="solidity-コンパイラを使用する">Solidity コンパイラを使用する</h3>
+<p>Solidity コンパイラの <code>solc</code> を使用するため、<a href="https://github.com/ethereum/solidity">ドキュメント</a>に従いビルドします。</p>
+<p>次のシェルスクリプトは、ドキュメントのリンク先にある、ソースコードからのビルド手順をまとめたものです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone --recursive https://github.com/ethereum/solidity.git
+</span></span><span style="display:flex;"><span>cd solidity
+</span></span><span style="display:flex;"><span>git checkout v0.4.24  <span style="color:#75715e"># Select from `git tag -l`</span>
+</span></span><span style="display:flex;"><span>./scripts/install_deps.sh
+</span></span><span style="display:flex;"><span>./scripts/build.sh
+</span></span><span style="display:flex;"><span>solc  <span style="color:#75715e"># Show help message</span>
+</span></span></code></pre></div><p><code>homebrew</code> の入っていない macOS の場合は、次のようにビルドします。</p>
+<h4 id="installing-boost-on-macos">Installing Boost on macOS</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -OL https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz
+</span></span><span style="display:flex;"><span>tar xzf boost_1_66_0.tar.gz
+</span></span><span style="display:flex;"><span>cd boost_1_66_0
+</span></span><span style="display:flex;"><span>./bootstrap.sh
+</span></span><span style="display:flex;"><span>sudo ./b2 install --prefix<span style="color:#f92672">=</span>/usr/local/boost
+</span></span></code></pre></div><h4 id="installing-solidity-on-macos">Installing Solidity on macOS</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone --recursive https://github.com/ethereum/solidity.git
+</span></span><span style="display:flex;"><span>cd solidity
+</span></span><span style="display:flex;"><span>git checkout v0.4.24  <span style="color:#75715e"># Select from `git tag -l`</span>
+</span></span><span style="display:flex;"><span>sudo BOOST_ROOT<span style="color:#f92672">=</span>/usr/local/boost scripts/build.sh
+</span></span><span style="display:flex;"><span>solc  <span style="color:#75715e"># Show help message</span>
+</span></span></code></pre></div><p><code>Greeter.sol</code> をコンパイルします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>solc -o target --bin --abi Greeter.sol
+</span></span></code></pre></div><p>次のように target というディレクトリに .abi (Application Binary Interface) と .bin が作成されます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tree
+</span></span><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── Greeter.sol
+</span></span><span style="display:flex;"><span>└── target
+</span></span><span style="display:flex;"><span>    ├── Greeter.abi
+</span></span><span style="display:flex;"><span>    ├── Greeter.bin
+</span></span><span style="display:flex;"><span>    ├── Mortal.abi
+</span></span><span style="display:flex;"><span>    └── Mortal.bin
+</span></span></code></pre></div><p>実際に Geth コンソールを起動し、コントラクトを作成してみます。Greeter には Mortal が含まれているため、 Greeter を展開するために Mortal を作成する必要はありません。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">greeterFactory</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">eth</span>.<span style="color:#a6e22e">contract</span>(...);  <span style="color:#75715e">// Greeter.abi の内容を渡す
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">greeterCompiled</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0x&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;...&#34;</span>;      <span style="color:#75715e">// Greeter.bin の内容を渡す
+</span></span></span></code></pre></div><p>展開する前にアカウントをアンロックします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">personal</span>.<span style="color:#a6e22e">unlockAccount</span>(<span style="color:#a6e22e">eth</span>.<span style="color:#a6e22e">accounts</span>[<span style="color:#ae81ff">0</span>], <span style="color:#e6db74">&#39;&#39;</span>);
+</span></span></code></pre></div><p>作成したコントラクトをネットワークへ展開します。 <code>Contract mined! Address</code> と表示されれば成功です。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">_greeting</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">greeter</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">greeterFactory</span>.<span style="color:#66d9ef">new</span>(<span style="color:#a6e22e">_greeting</span>, {<span style="color:#a6e22e">from</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">eth</span>.<span style="color:#a6e22e">accounts</span>[<span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">greeterCompiled</span>, <span style="color:#a6e22e">gas</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">4700000</span>}, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">e</span>, <span style="color:#a6e22e">contract</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">e</span>);  <span style="color:#75715e">// If something goes wrong, at least we&#39;ll know.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">contract</span>.<span style="color:#a6e22e">address</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Contract transaction send: TransactionHash: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">contract</span>.<span style="color:#a6e22e">transactionHash</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; waiting to be mined...&#34;</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Contract mined! Address: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">contract</span>.<span style="color:#a6e22e">address</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">contract</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h3 id="remix-を使用する">Remix を使用する</h3>
+<p><code>solc</code> をインストールしていない場合は、 <a href="https://remix.ethereum.org/">Remix</a> を使用します。</p>
+<p>コントラクトの作成・展開の手順は次の通りです。</p>
+<ol>
+<li>ソースコード <code>Greeter.sol</code> を Remix にコピーして、コンパイルされることを確認</li>
+<li>右ペインのドロップダウンメニューで <strong>Greeter</strong> が選択されていることを確認</li>
+<li>ドロップダウンの右にある <strong>Details</strong> ボタンをクリック</li>
+<li>ポップアップを下にスクロールして <strong>WEB3DEPLOY</strong> の内容をコピー</li>
+<li><code>yourFilename.js</code> を作成し、コピーしたコードをペースト</li>
+<li>ローカル開発環境での作業</li>
+</ol>
+<h4 id="remix-での作業">Remix での作業</h4>
+<p><code>selfdestruct</code> に関する警告が出ると思いますが、呼び出し元チェックにより安全とみなし、無視しています。</p>
+<p><img src="/images/remix-compile.png" alt="Remix での作業"></p>
+<h4 id="ローカル開発環境での作業">ローカル開発環境での作業</h4>
+<p><code>yourFilename.js</code> の最初の行を次のように変更してください。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">_greeting</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span>;
+</span></span></code></pre></div><p><code>geth</code> コンソールを起動して、アカウントをアンロックします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">personal</span>.<span style="color:#a6e22e">unlockAccount</span>(<span style="color:#a6e22e">eth</span>.<span style="color:#a6e22e">accounts</span>[<span style="color:#ae81ff">0</span>], <span style="color:#e6db74">&#39;&#39;</span>);
+</span></span></code></pre></div><p>スクリプトを読み込んでコントラクトを作成・展開します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">loadScript</span>(<span style="color:#e6db74">&#34;yourFilename.js&#34;</span>);
+</span></span></code></pre></div><p>マイニングが完了すると、次のようなメッセージが表示されるはずです。</p>
+<pre tabindex="0"><code>Contract mined! address: 0xdaa24d02bad7e9d6a80106db164bad9399a0423e
+</code></pre><p>コントラクトが正常に展開できたかどうかを確認するには、次のコードを実行します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">eth</span>.<span style="color:#a6e22e">getCode</span>(<span style="color:#a6e22e">greeter</span>.<span style="color:#a6e22e">address</span>);
+</span></span></code></pre></div><p><code>0x</code> 以外の値を返せば成功です！</p>
+<h2 id="実行">実行</h2>
+<p>挨拶してみます。チェーンに変更を加えないので Gas コストなしで実行できます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">greeter</span>.<span style="color:#a6e22e">greet</span>();
+</span></span></code></pre></div><p>コントラクト作成時に予め決めたメッセージが表示されるはずです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#e6db74">&#34;Hello World!&#34;</span>
+</span></span></code></pre></div><p>同じコントラクトを再度実行するには、<code>Address</code> と <code>ABI</code> が必要になります。次のようにすることで、同じコントラクトの JavaScript オブジェクトをインスタンス化できます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">greeter2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">eth</span>.<span style="color:#a6e22e">contract</span>(<span style="color:#a6e22e">greeter</span>.<span style="color:#a6e22e">abi</span>).<span style="color:#a6e22e">at</span>(<span style="color:#a6e22e">greeter</span>.<span style="color:#a6e22e">address</span>);
+</span></span></code></pre></div><h2 id="コントラクトを破棄">コントラクトを破棄</h2>
+<p>将来的にはスケーラビリティを高めるためにブロックチェーンのレンタル機能が実装されるかもしれないとのことですが、現時点では、不要になったコントラクトは、ブロックチェーン上に放棄されます。</p>
+<p>次のコードを実行すると、ブロックチェーンに加えられた変更に対して支払う手数料が発生します。ただし、自己破壊はネットワークによって助成されるので、通常の取引よりもはるかに安くなります。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">greeter</span>.<span style="color:#a6e22e">kill</span>.<span style="color:#a6e22e">sendTransaction</span>({<span style="color:#a6e22e">from</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">eth</span>.<span style="color:#a6e22e">accounts</span>[<span style="color:#ae81ff">0</span>]});
+</span></span></code></pre></div><p><code>Greeter.sol</code> で定義した通り、所有者 (from: owner) の呼び出しに限定しているため、それ以外のアドレスからは実行できません。次のコードを実行して <code>0x</code> を返せば破棄が完了しています。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">eth</span>.<span style="color:#a6e22e">getCode</span>(<span style="color:#a6e22e">greeter</span>.<span style="color:#a6e22e">address</span>);
+</span></span></code></pre></div><h2 id="おわりに">おわりに</h2>
+<p>基本的にチュートリアル通りの内容ですが、最新バージョンで廃止になっているコードを置き換えたり、コンパイルが通らない箇所など、部分的に書き換えているところがあります。</p>
+<p>この記事について、何か気になるところがあれば、お気軽にご連絡ください！</p>
+</section>
+            </article>
+        </main>
+        <footer>
+    
+    <ul>
+        
+            <li><a href="https://discord.gg/JhgFz8u">Discord</a></li>
+        
+            <li><a href="https://github.com/oshinko">GitHub</a></li>
+        
+            <li><a href="https://twitter.com/Osynco">Twitter</a></li>
+        
+            <li><a href="https://steamcommunity.com/id/Osh1nko">Steam</a></li>
+        
+    </ul>
+    
+    <small>
+        (C) 2018 Osync I/O.
+        Powered by <a href="https://gohugo.io">Hugo</a>.
+    </small>
+</footer>
+
+    </body>
+</html>

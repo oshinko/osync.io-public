@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Osync I/O</title>
+    <link>http://osync.io/</link>
+    <description>Recent content on Osync I/O</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 11 Aug 2018 19:00:00 +0900</lastBuildDate><atom:link href="http://osync.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTTP Ethereum Authentication</title>
+      <link>http://osync.io/posts/http-ethereum-auth/</link>
+      <pubDate>Sat, 11 Aug 2018 19:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/http-ethereum-auth/</guid>
+      <description>Ethereum アドレスを検証する HTTP 認証スキームです。 具体的な実装は、 Python パッケージで確認できます。 使い方 仕様はシンプルで、次のようにアドレスと署名を Authorization ヘッ</description>
+    </item>
+    
+    <item>
+      <title>HTTP Email Authentication</title>
+      <link>http://osync.io/posts/http-email-auth/</link>
+      <pubDate>Sat, 21 Jul 2018 22:30:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/http-email-auth/</guid>
+      <description>Email を利用した HTTP 認証スキームです。 メールによるワンタイムパスワードなど、パスワードレス認証の実現を目的とした、 HMAC ベースのテンポラリトークン認証</description>
+    </item>
+    
+    <item>
+      <title>Ethereum Hello World Contract</title>
+      <link>http://osync.io/posts/ethereum-hello-world-contract/</link>
+      <pubDate>Fri, 22 Jun 2018 16:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/ethereum-hello-world-contract/</guid>
+      <description>この記事では、実際のスマートコントラクト (DApps) を Hello World Contract チュートリアルに沿って動かしています。 事前に Ethereum プライベートネットを構築しておくと、ブロック</description>
+    </item>
+    
+    <item>
+      <title>Ethereum Private Network</title>
+      <link>http://osync.io/posts/ethereum-private-network/</link>
+      <pubDate>Wed, 20 Jun 2018 22:15:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/ethereum-private-network/</guid>
+      <description>スマートコントラクト (DApps) の開発を行うために、イーサリアムの公式 CLI である Geth を使用して、プライベートネットワークを構築していきます。 開発環境のディ</description>
+    </item>
+    
+    <item>
+      <title>MetaMask Signing</title>
+      <link>http://osync.io/posts/metamask-signing/</link>
+      <pubDate>Tue, 19 Jun 2018 18:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/metamask-signing/</guid>
+      <description>MetaMask を介したメッセージ署名を行いました。 MetaMask を準備 MetaMask は Chrome 拡張機能です。下記からダウンロードください。 HTML を作成 MetaMask が用意した Ethereum web3 API を実行する HTML フ</description>
+    </item>
+    
+    <item>
+      <title>Gitbot</title>
+      <link>http://osync.io/posts/gitbot/</link>
+      <pubDate>Tue, 19 Jun 2018 15:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/gitbot/</guid>
+      <description>最新版は、 https://github.com/oshinko/gitbot をご覧ください！ Installing on Raspbian Installing Python 3.6 sudo apt-get update sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev wget https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz tar xf Python-3.6.5.tar.xz cd Python-3.6.5 ./configure make sudo make altinstall Installing Git sudo apt-get install git Configuring User sudo useradd -m -s /bin/bash git sudo su - git ssh-keygen</description>
+    </item>
+    
+    <item>
+      <title>Git インストール</title>
+      <link>http://osync.io/posts/git/</link>
+      <pubDate>Fri, 15 Jun 2018 20:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/git/</guid>
+      <description>ソースコードからインストールする方法です。 OS は Linux や macOS を想定しています。 git clone git@github.com:git/git.git cd git make configure ./configure --prefix=/usr/local/git sudo make install git --version ライブラリ依存エラーが発生する場合は、別途</description>
+    </item>
+    
+    <item>
+      <title>ゲーミング PC</title>
+      <link>http://osync.io/posts/gaming-pc/</link>
+      <pubDate>Sat, 12 May 2018 12:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/gaming-pc/</guid>
+      <description>PUBG やりたかったので、ゲーミングマシンを組みました。 Specs: CPU: AMD Ryzen 7 2700X Motherboard: ASRock X470 Taichi Ultimate RAM: F4-2933C14D-32GTZRX (DDR4 PC4-23400 16GB x 2) OS: Windows 10 Home Storage: Samsung SSD 500GB 960EVO GPU: ZOTAC GeForce GTX 1080 Ti AMP Extreme Power: Seasonic SSR-850TR Chassis: CA-1J7-00M1WN-01 VIEW 37 RGB Plus Mouse:</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>http://osync.io/about/</link>
+      <pubDate>Sun, 22 Apr 2018 10:00:00 +0900</pubDate>
+      
+      <guid>http://osync.io/about/</guid>
+      <description>このサイトは、ゲーム好きプログラマー「おしんこ」が、趣味で始めたブログです。 何で作られてるの？ Hugo というサイトジェネレーターで作られています。</description>
+    </item>
+    
+  </channel>
+</rss>

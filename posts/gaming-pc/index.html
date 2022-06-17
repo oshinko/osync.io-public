@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ゲーム好きプログラマーおしんこのブログ">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@"> 
+    <meta name="twitter:site" content="@">
+    <meta property="og:url" content="http://osync.io/posts/gaming-pc/">
+    
+        <meta property="og:title" content="ゲーミング PC - Osync I/O"> 
+    
+    <meta property="og:description" content="PUBG やりたかったので、ゲーミングマシンを組みました。 Specs: CPU: AMD Ryzen 7 2700X Motherboard: ASRock X470 Taichi Ultimate RAM: F4-2933C14D-32GTZRX (DDR4 PC4-23400 16GB x 2) OS: Windows 10 Home Storage: Samsung SSD 500GB 960EVO GPU: ZOTAC GeForce GTX 1080 Ti AMP Extreme Power: Seasonic SSR-850TR Chassis: CA-1J7-00M1WN-01 VIEW 37 RGB Plus Mouse:">
+    <meta property="og:image" content="http://osync.io/images/headers/gaming-pc.png">
+    
+        <title>ゲーミング PC - Osync I/O</title>
+    
+    <link rel="stylesheet" href="/fonts/FiraCode/fira_code.css">
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JQCHZM9PGG"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-JQCHZM9PGG', { 'anonymize_ip': false });
+}
+</script>
+
+    <style>
+        @font-face {
+            font-family: flop;
+            src: url(/fonts/flop/FLOPDesignFont.woff2) format("woff2"),
+                 url(/fonts/flop/FLOPDesignFont.woff) format("woff");
+            font-weight: 400;
+        }
+        img {
+            max-width: 100%;
+        }
+        body {
+            margin: 0;
+            font-family: flop, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #e7f4ff;
+        }
+        a {
+            color: #499bea;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #304999;
+        }
+        pre code {
+            background-color: #eee;
+            border: 1px solid #999;
+            display: block;
+            padding: 1em;
+            line-height: 1.4em;
+            font-family: 'Fira Code', monospace;
+            overflow: auto;
+        }
+        header {
+            padding: 1em;
+            background: linear-gradient(to top, #499bea 0%, #304999 100%);
+            color: #b6cee2;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0 0 .4em 0;
+            color: #fff;
+        }
+        header h1 a {
+            color: inherit;
+            text-decoration: none;
+        }
+        header h1 a:hover {
+            color: #b6cee2;
+        }
+        header p {
+            margin: 0;
+            font-size: .8em;
+        }
+        nav {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            nav {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        nav li {
+            display: inline;
+            line-height: 1.6;
+            padding-bottom: .4em;
+            border-bottom: 2px solid #fff;
+        }
+        nav li.selected {
+            border-bottom: 2px solid #cc0051;
+        }
+        main {
+            margin: 1em;
+        }
+        @media screen and (min-width: 920px) {
+            main {
+                width: 912px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        article {
+            margin: 1.5em 0;
+            padding: 1em;
+            background-color: #fff;
+        }
+        article h1 {
+            margin: 0 0 .6em 0;
+            font-size: 1.5em;
+        }
+        article h2 {
+            position: relative;
+            padding: .6em 1em;
+            background-color: #61a5e4;
+            border-radius: 7px;
+            color: white;
+            font-size: 1.25em;
+        }
+        article h2:after {
+            position: absolute;
+            content: '';
+            top: 100%;
+            left: 30px;
+            border: 8px solid transparent;
+            border-top: 8px solid #61a5e4;
+            width: 0;
+            height: 0;
+        }
+        article h3 {
+            padding: .25em 0 .25em .6em;
+            border-left: .4em solid #499bea;
+            font-size: 1.125em;
+        }
+        article > ul {
+            margin: 1em 0;
+            padding: 0;
+            list-style: none;
+            font-size: .8em;
+        }
+        article > ul li {
+            display: inline;
+            line-height: 1.6;
+        }
+        article .date {
+            font-size: .8em;
+        }
+        section li {
+            line-height: 1.6;
+        }
+        footer {
+            margin: 1em;
+        }
+        footer ul {
+            margin: 0;
+            padding: 0 0 0;
+            list-style: none;
+            text-align: center;
+        }
+        footer li {
+            display: inline;
+            line-height: 1.6;
+        }
+        footer small {
+            display: block;
+            margin: 1em;
+            text-align: center;
+            color: #666;
+        }
+        .responsive {
+            position: relative;
+            padding-bottom: 75%;
+        }
+        .responsive > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+        }
+        ul.pagination {
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, Sans-Serif;
+        }
+        ul.pagination li {
+            display: inline;
+            padding: .2em;
+        }
+    </style>
+</head>
+
+    <body>
+        <header>
+    <h1><a href="/">Osync I/O</a></h1>
+    <p>ゲーム好きプログラマーおしんこのブログ</p>
+</header>
+
+        
+
+<nav>
+    <ul>
+        
+            <li>
+                <a href="/posts">Posts</a></li>
+        
+            <li>
+                <a href="/tags">Tags</a></li>
+        
+            <li>
+                <a href="/about">About</a></li>
+        
+    </ul>
+</nav>
+
+
+        <main>
+            <article>
+                <h1><a href="/posts/gaming-pc/">ゲーミング PC</a></h1>
+                
+                    
+                        <p class="date">
+                            <time datetime="2018-07-21 18:51:05 &#43;0900">
+                                Last committed on 18/07/21 18:51 &#43;0900
+                            </time>
+                        </p>
+                    
+                    <p class="date">
+                        <time datetime="2018-05-12T12:00:00Z&#43;0900">
+                            Posted on 18/05/12 12:00 &#43;0900
+                        </time>
+                    </p>
+                
+                
+                    <ul>
+                        
+                            <li><a href="/tags/ryzen">ryzen</a></li>
+                        
+                            <li><a href="/tags/gaming">gaming</a></li>
+                        
+                            <li><a href="/tags/pc">pc</a></li>
+                        
+                            <li><a href="/tags/machine">machine</a></li>
+                        
+                            <li><a href="/tags/cryptocurrency">cryptocurrency</a></li>
+                        
+                            <li><a href="/tags/mining">mining</a></li>
+                        
+                            <li><a href="/tags/pubg">pubg</a></li>
+                        
+                    </ul>
+                
+                <img src="/images/headers/gaming-pc.png">
+                
+                <section><p>PUBG やりたかったので、ゲーミングマシンを組みました。</p>
+<p>Specs:</p>
+<ul>
+<li>CPU: AMD Ryzen 7 2700X</li>
+<li>Motherboard: ASRock X470 Taichi Ultimate</li>
+<li>RAM: F4-2933C14D-32GTZRX (DDR4 PC4-23400 16GB x 2)</li>
+<li>OS: Windows 10 Home</li>
+<li>Storage: Samsung SSD 500GB 960EVO</li>
+<li>GPU: ZOTAC GeForce GTX 1080 Ti AMP Extreme</li>
+<li>Power: Seasonic SSR-850TR</li>
+<li>Chassis: CA-1J7-00M1WN-01 VIEW 37 RGB Plus</li>
+<li>Mouse: Logicool G903 + G-PMP-001</li>
+<li>Keyboard: HyperX Alloy FPS Pro HX-KB4RD1-US/R1</li>
+<li>Chair: DXRACER DXZ-BLN</li>
+<li>LAN: KB-T7ME-02BKR</li>
+</ul>
+<h2 id="windows-10-がインストールできない問題">Windows 10 がインストールできない問題</h2>
+<p><a href="https://www.microsoft.com/ja-jp/software-download/windows10ISO">Windows 10 ディスクイメージ ISO ファイル</a>から、
+ブータブル USB を作成してインストールを試みましたが、失敗してしまった問題を共有します。</p>
+<h3 id="症状">症状</h3>
+<p>ブータブル USB を挿し込み、正常に起動したかのように見えますが、下記のドライバーインストール画面で止まります。</p>
+<p><img src="/images/win10-driver-not-found.png" alt="Windows 10 インストール失敗" title="Windows 10 インストール失敗"></p>
+<p>この問題を解決するために、まず最初に考えられるドライバーのインストールや BIOS 設定を試しましたが、全く効果がみられませんでした。</p>
+<h3 id="原因">原因</h3>
+<p>作成したブータブル USB 自体に問題がありました。</p>
+<p>私は Mac 端末の diskutil コマンドを使用しましたが、何か異常な状態で作成されてしまうようで、 Windows 7 以上の端末にて、公式で用意される Windows 10 メディア作成ツールで作り直して試したところ、あっさり上手くいきました。</p>
+<h2 id="pubg-がクラッシュする問題">PUBG がクラッシュする問題</h2>
+<p>こちらはさらにしんどい問題。ゲームの起動後にクラッシュが頻発し、まともに遊べません。</p>
+<p>ゲームの起動後、ロビー画面クラッシュ、マッチングクラッシュ、降下中クラッシュ、激戦区クラッシュ、安地外クラッシュ、とにかくゲームがよく落ちます。復帰して運良くキャラが生きてた時は感動します。予め想定して、安地方向に走らせてクラッシュに備えるんですよ。マジで苦行です。</p>
+<h3 id="クラッシュログを確認">クラッシュログを確認</h3>
+<p>クラッシュの確認後、 <code>%LocalAppData%\TslGame\Saved\Crashes</code> にある Unreal Engine のログを確認してみると、グラフィック周りの問題を示す <code>RenderThread</code> のタイムアウトに関するログが確認できると思います。 (次の画像)</p>
+<p><img src="/images/pubg-unreal-engine-crash-log.jpg" alt="PUBG Unreal Engine Crash Log" title="PUBG Unreal Engine Crash Log"></p>
+<p>このことから、グラフィックボードとゲームの相性に問題があると思われます。</p>
+<h3 id="回避策">回避策</h3>
+<p>結論からいうと、グラフィックボードのコア・メモリクロック数が高すぎることが原因のようです。 <a href="https://www.msi.com/page/afterburner">MSI Afterburner</a> を使用して、次の画像のようにアンダークロックする必要があります。</p>
+<p><img src="/images/afterburner-underclocking.jpg" alt="Afterburner Underclocking" title="Afterburner Underclocking"></p>
+<p>Core Clock と Memory Clock をそれぞれ -50MHz に設定することで、全くクラッシュしなくなりました。</p>
+<h4 id="その他の効果があったその他の方法">その他の効果があったその他の方法</h4>
+<ol>
+<li>PUBG グラフィック品質を全て「最低」にすると多少安定</li>
+<li>PUBG グラフィック設定の垂直同期を有効にして、フレームレートを固定すると完全に安定 (次の画像)</li>
+</ol>
+<p><img src="/images/pubg-settings-20180522.png" alt="PUBG グラフィック設定" title="PUBG グラフィック設定"></p>
+<p>この 2 番目の方法を試すまで、ゲームカメラを激しく動かすとモニタに若干のティアリングが生じていました。 60Hz のモニタを使用していましたので、垂直同期を有効にすると最大で 60Fps に抑制されます。モニタの最大リフレッシュレートが 144Hz など高いと、効果がないことがわかっています。</p>
+<h3 id="効果がなかった方法">効果がなかった方法</h3>
+<p>一応、効果がなかった方法についても記載しておきます。</p>
+<p>効果がなかったとはいえ、主要モジュールのテストが出来たので、複雑な気分ではありますw</p>
+<ul>
+<li>GPU ドライバーを再インストール (GeForce Experience)</li>
+<li>GPU 検査 (MSI Kombustor Stress Test 問題なし)</li>
+<li>GPU グラフィックボードの挿し直し (別 PCIe スロットへの挿し直し含む)</li>
+<li>メモリ検査 (Memtest86 で 5 Pass)</li>
+<li>SSD 検査 (CrystalDiskMark 問題なし)</li>
+<li><a href="https://www.asrock.com/MB/AMD/X470%20Taichi%20Ultimate/index.jp.asp#BIOS">ASRock BIOS アップデート</a></li>
+<li>Steam Overlay を無効</li>
+<li>GeForce Experience Overlay を無効</li>
+<li>PUBG グラフィック品質を全て「低」に設定</li>
+</ul>
+<h2 id="仮想通貨マイニング性能">仮想通貨マイニング性能</h2>
+<p>Ryzen 7 2700X で Yescrypt マイニング試したところ、ハッシュレート 8 KH/s ほど出ました。
+流石のパワーです。
+GPU マイニングは後日検証して、こちらに記載したいと思います。</p>
+</section>
+            </article>
+        </main>
+        <footer>
+    
+    <ul>
+        
+            <li><a href="https://discord.gg/JhgFz8u">Discord</a></li>
+        
+            <li><a href="https://github.com/oshinko">GitHub</a></li>
+        
+            <li><a href="https://twitter.com/Osynco">Twitter</a></li>
+        
+            <li><a href="https://steamcommunity.com/id/Osh1nko">Steam</a></li>
+        
+    </ul>
+    
+    <small>
+        (C) 2018 Osync I/O.
+        Powered by <a href="https://gohugo.io">Hugo</a>.
+    </small>
+</footer>
+
+    </body>
+</html>
