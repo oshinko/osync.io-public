@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Google Calendar on Osync I/O</title>
+    <link>http://osync.io/tags/google-calendar/</link>
+    <description>Recent content in Google Calendar on Osync I/O</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 18 Jun 2022 19:30:00 +0900</lastBuildDate><atom:link href="http://osync.io/tags/google-calendar/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Google カレンダーから稼働表を作成する</title>
+      <link>http://osync.io/posts/paical/</link>
+      <pubDate>Sat, 18 Jun 2022 19:30:00 +0900</pubDate>
+      
+      <guid>http://osync.io/posts/paical/</guid>
+      <description>稼働表を作成する面倒臭さ 私の職業柄、請求書を作成するために「今日何時間働いた」という記録を残すことが多いのですが、これがとても面倒臭いのです</description>
+    </item>
+    
+  </channel>
+</rss>
